@@ -81,11 +81,13 @@ window.ALBUMS = [
   }
 ];
 
+/* B-Sides gallery — kind: "photo" | "artwork". Drop files into assets/
+   and add entries here; both kinds share the same grid. */
 window.PHOTOS = [
-  { id: "p1", src: "assets/photo-1.jpg", title: "Neon Frequencies", description: "Urban nightscape captured in long exposure", date: "2025.01" },
-  { id: "p2", src: "assets/photo-2.jpg", title: "Light Geometry", description: "Abstract light painting experiment", date: "2025.02" },
-  { id: "p3", src: "assets/photo-3.jpg", title: "Mechanical Soul", description: "Close-up of robotic mechanisms", date: "2024.11" },
-  { id: "p4", src: "assets/photo-4.jpg", title: "Blue Hour", description: "Mountain landscape at twilight", date: "2024.09" }
+  { id: "p1", src: "assets/photo-1.jpg", kind: "photo", title: "Neon Frequencies", description: "Urban nightscape captured in long exposure", date: "2025.01" },
+  { id: "p2", src: "assets/photo-2.jpg", kind: "photo", title: "Light Geometry", description: "Abstract light painting experiment", date: "2025.02" },
+  { id: "p3", src: "assets/photo-3.jpg", kind: "photo", title: "Mechanical Soul", description: "Close-up of robotic mechanisms", date: "2024.11" },
+  { id: "p4", src: "assets/photo-4.jpg", kind: "photo", title: "Blue Hour", description: "Mountain landscape at twilight", date: "2024.09" }
 ];
 
 /* 60% chance of a track, 40% an album — same as getRandomItem() in source */

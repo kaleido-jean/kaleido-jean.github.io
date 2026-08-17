@@ -41,7 +41,8 @@
     var el = document.createElement("div");
     el.className = "photo fade-in d" + Math.min(i + 1, 4);
     el.innerHTML = '<img loading="lazy" src="' + p.src + '" alt="' + p.title + '">' +
-      '<div class="cap"><p class="t">' + p.title + '</p><p class="metadata">' + p.date + "</p></div>";
+      '<div class="cap"><p class="t">' + p.title + '</p><p class="metadata">' +
+      (p.kind === "artwork" ? "Artwork" : "Photo") + " · " + p.date + "</p></div>";
     return el;
   }
 

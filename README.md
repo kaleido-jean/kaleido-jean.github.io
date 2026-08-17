@@ -22,14 +22,14 @@ gh repo create kaleido-jean/kaleido-jean.github.io --public --source=. --push
 | 邮箱 | 现在用的 gmail，想换 andrew 邮箱改 `index.html` 的 mailto |
 | 专辑 / 曲目 | `assets/albums.js` —— 一个对象一张专辑，改这一个文件即可。`type` 字段决定分区：`album`/`ep` = 项目（首页 Albums & EPs），`mixtape` = 随笔（首页 Mixtapes） |
 | 首页动态 | `index.html` 的 Latest Updates + `about.html` 的 Updates 时间线（两处） |
-| 照片 | 把图放进 `assets/photos/`，替换 `photography.html` 和 `index.html` 里的渐变占位 div（注释里有示例代码） |
+| B-Sides（照片+艺术作品） | 图放进 `assets/`，在 `assets/albums.js` 的 `PHOTOS` 数组加条目，`kind: "photo"` 或 `"artwork"`——首页预览和 bsides.html 画廊自动同步 |
 | 头像 | `assets/profile.jpg`（已压到 540×720） |
 
 ## 结构
 
 - `index.html` — 学术式简介 hero + Updates + Discography/Photography 预览
 - `discography.html` — 全部专辑 · `album.html?id=<slug>` — 专辑详情 · `track.html?album=<slug>&track=<id>` — 课文页
-- `photography.html` / `about.html`
+- `bsides.html`（B-Sides：照片+艺术作品画廊）/ `about.html`
 - `assets/site.js` 渲染与主题 · `assets/chladni.js` Chladni 封面生成 · `assets/albums.js` 全部内容数据
 
 ## 与原稿（github.com/kaleido-jean/genz-discography）的对应关系
