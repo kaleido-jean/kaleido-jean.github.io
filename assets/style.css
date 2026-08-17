@@ -354,7 +354,7 @@ article.lesson p { margin: 0 0 16px; }
 .about-updates .row .when { margin-left: 16px; white-space: nowrap; font-size: 12px; }
 
 /* ---------------- footer ---------------- */
-footer.site { border-top: 1px solid hsl(var(--border)); padding: 40px 0; }
+footer.site { border-top: 1px solid hsl(var(--border)); padding: 16px 0; }
 footer.site .container { display: flex; align-items: center; justify-content: space-between; }
 
 /* ---------------- entrance animations (fade-in from source) ---------------- */
