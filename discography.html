@@ -4,47 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Discography — Jinyao Zhou</title>
+<script>try{var s=localStorage.getItem("theme");if(s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23171310'/><circle cx='50' cy='50' r='30' fill='none' stroke='%2384bf26' stroke-width='4'/><circle cx='50' cy='50' r='8' fill='%2384bf26'/></svg>">
 </head>
 <body>
-<div class="grooves" aria-hidden="true"></div>
-
+<div id="curves" aria-hidden="true"></div>
 <nav class="nav">
-  <div class="wrap nav-in">
-    <a class="logo" href="index.html">z<b>disco</b></a>
-    <a class="nav-link" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Home</a>
-    <a class="nav-link" aria-current="page" href="discography.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg>Discography</a>
-    <a class="nav-link" href="photography.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13" r="3.5"/></svg>Photography</a>
-    <a class="nav-link" href="about.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>About</a>
-    <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 13A8.5 8.5 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg></button>
-    <button class="btn-shuffle" onclick="shuffle()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Shuffle</button>
+  <div class="container wide nav-in">
+    <a class="logo" href="index.html">z<span>disco</span></a>
+    <div class="nav-right">
+      <a class="nav-link" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span class="lbl">Home</span></a>
+      <a class="nav-link" aria-current="page" href="discography.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span class="lbl">Discography</span></a>
+      <a class="nav-link" href="photography.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13" r="3.5"/></svg><span class="lbl">Photography</span></a>
+      <a class="nav-link" href="about.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="lbl">About</span></a>
+      <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 13A8.5 8.5 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg>
+      </button>
+      <button class="nav-shuffle" onclick="shuffle()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span class="lbl">Shuffle</span></button>
+    </div>
   </div>
 </nav>
-
 <main>
-  <div class="wrap page-head">
-    <h1>Discography</h1>
-    <p>Everything I've learned and built, organized as albums, EPs, and mixtapes.</p>
-  </div>
-  <section class="band" style="padding-top:26px">
-    <div class="wrap">
-      <div class="grid-albums" data-albums></div>
+  <div class="container page-pad">
+    <div class="page-head fade-in">
+      <h1>Discography</h1>
+      <p>All robotics topics, organized as albums, EPs, and mixtapes.</p>
     </div>
-  </section>
+    <div class="grid-albums all" data-albums></div>
+  </div>
 </main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <span>© 2026 Jinyao Zhou</span>
-    <span>Built with passion &amp; curiosity</span>
+<footer class="site">
+  <div class="container wide">
+    <span class="metadata">© 2026 Jinyao Zhou</span>
+    <span class="metadata">Built with passion &amp; curiosity</span>
   </div>
 </footer>
-
 <script src="assets/albums.js"></script>
 <script src="assets/site.js"></script>
+<script src="assets/curves.js"></script>
 </body>
 </html>

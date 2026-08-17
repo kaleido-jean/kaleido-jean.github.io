@@ -1,114 +1,122 @@
-/* theme toggle + cover art + album rendering + shuffle */
+/* theme (.dark class, like next-themes) + shuffle + shared rendering */
 (function () {
-  /* ---------- theme ---------- */
   var root = document.documentElement;
   var saved = null;
   try { saved = localStorage.getItem("theme"); } catch (e) {}
-  if (saved === "dark" || saved === "light") root.dataset.theme = saved;
-  else root.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  var dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.classList.toggle("dark", dark);
 
   window.toggleTheme = function () {
-    root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
-    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+    var isDark = root.classList.toggle("dark");
+    try { localStorage.setItem("theme", isDark ? "dark" : "light"); } catch (e) {}
   };
 
-  /* ---------- procedural cover art ---------- */
-  function coverSVG(art, hue) {
-    var c1 = "hsl(" + hue + " 85% 62%)";
-    var c2 = "hsl(" + ((hue + 50) % 360) + " 85% 60%)";
-    var s = "";
-    if (art === "arm") {
-      s = '<path d="M20 84 L40 50 L62 38 L80 20" fill="none" stroke="' + c1 + '" stroke-width="5" stroke-linecap="round"/>' +
-          '<circle cx="40" cy="50" r="6" fill="' + c2 + '"/><circle cx="62" cy="38" r="6" fill="' + c2 + '"/>' +
-          '<circle cx="80" cy="20" r="4" fill="' + c1 + '"/><rect x="12" y="82" width="26" height="6" rx="3" fill="' + c2 + '"/>';
-    } else if (art === "wave") {
-      for (var i = 0; i < 5; i++)
-        s += '<path d="M6 ' + (30 + i * 12) + ' Q 30 ' + (10 + i * 12) + ' 52 ' + (30 + i * 12) + ' T 98 ' + (30 + i * 12) + '" fill="none" stroke="' + (i % 2 ? c2 : c1) + '" stroke-width="2.5" opacity="' + (1 - i * 0.14) + '"/>';
-    } else if (art === "grid") {
-      for (var g = 12; g <= 88; g += 19)
-        s += '<line x1="' + g + '" y1="10" x2="' + g + '" y2="90" stroke="' + c1 + '" stroke-width="1.4" opacity=".6"/>' +
-             '<line x1="10" y1="' + g + '" x2="90" y2="' + g + '" stroke="' + c2 + '" stroke-width="1.4" opacity=".45"/>';
-      s += '<circle cx="50" cy="50" r="13" fill="none" stroke="' + c1 + '" stroke-width="3"/>';
-    } else if (art === "rings") {
-      for (var r = 10; r <= 42; r += 8)
-        s += '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' + (r % 16 === 2 ? c2 : c1) + '" stroke-width="2.4" opacity="' + (1 - r / 60) + '"/>';
-      s += '<circle cx="50" cy="50" r="4" fill="' + c2 + '"/>';
-    } else { /* circuit */
-      s = '<path d="M14 20 H48 V48 H84 M48 48 V82 M30 82 H70 M84 30 V70" fill="none" stroke="' + c1 + '" stroke-width="3.5" stroke-linecap="round"/>' +
-          '<circle cx="14" cy="20" r="4.5" fill="' + c2 + '"/><circle cx="84" cy="30" r="4.5" fill="' + c2 + '"/>' +
-          '<circle cx="84" cy="70" r="4.5" fill="' + c1 + '"/><circle cx="30" cy="82" r="4.5" fill="' + c1 + '"/>';
-    }
-    return '<svg viewBox="0 0 100 100" aria-hidden="true">' + s + "</svg>";
+  /* global shuffle — 60% lands on a track, 40% on an album */
+  window.shuffle = function () {
+    var item = window.getRandomItem();
+    location.href = item.type === "track"
+      ? "track.html?album=" + item.albumId + "&track=" + item.trackId
+      : "album.html?id=" + item.albumId;
+  };
+
+  function albumCard(a, i) {
+    var el = document.createElement("a");
+    el.className = "album-card fade-in d" + Math.min(i + 1, 4);
+    el.href = "album.html?id=" + a.id;
+    var label = { album: "Album", ep: "EP", mixtape: "Mixtape" }[a.type];
+    el.innerHTML =
+      '<div class="box"><div class="art"><img loading="lazy" src="' + a.cover + '" alt="' + a.title + '"></div>' +
+      '<div class="meta"><div class="metadata">' + label + " · " + a.year + "</div>" +
+      "<h3>" + a.title + "</h3>" +
+      '<p class="tracks">' + a.tracks.length + " tracks</p></div></div>";
+    return el;
   }
 
-  function coverEl(album, large) {
-    var d = document.createElement("div");
-    d.className = "cover" + (large ? " cover-lg" : "");
-    d.style.background =
-      "radial-gradient(circle at 30% 25%, hsl(" + album.hue + " 60% 22% / .9), #100d0b 70%)";
-    d.innerHTML =
-      '<span class="sleeve-top">zdisco records</span>' +
-      coverSVG(album.art, album.hue) +
-      '<span class="sleeve-bot">' + album.title + "</span>";
-    return d;
+  function photoCell(p, i) {
+    var el = document.createElement("div");
+    el.className = "photo fade-in d" + Math.min(i + 1, 4);
+    el.innerHTML = '<img loading="lazy" src="' + p.src + '" alt="' + p.title + '">' +
+      '<div class="cap"><p class="t">' + p.title + '</p><p class="metadata">' + p.date + "</p></div>";
+    return el;
   }
 
-  /* ---------- render album cards into [data-albums] ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-albums]").forEach(function (mount) {
       var limit = parseInt(mount.dataset.albums, 10) || window.ALBUMS.length;
-      window.ALBUMS.slice(0, limit).forEach(function (a) {
-        var card = document.createElement("a");
-        card.className = "album-card fade";
-        card.href = "album.html?id=" + a.id;
-        card.appendChild(coverEl(a));
-        var m = document.createElement("div");
-        m.className = "meta";
-        m.innerHTML = '<span class="kind">' + a.kind + " · " + a.year + "</span>" +
-          "<h3>" + a.title + "</h3>" +
-          '<span class="tracks">' + a.tracks.length + " tracks</span>";
-        card.appendChild(m);
-        mount.appendChild(card);
-      });
+      window.ALBUMS.slice(0, limit).forEach(function (a, i) { mount.appendChild(albumCard(a, i)); });
+    });
+    document.querySelectorAll("[data-photos]").forEach(function (mount) {
+      window.PHOTOS.forEach(function (p, i) { mount.appendChild(photoCell(p, i)); });
     });
 
-    /* ---------- album detail page ---------- */
-    var detail = document.querySelector("[data-album-detail]");
-    if (detail) {
-      var id = new URLSearchParams(location.search).get("id");
-      var a = window.ALBUMS.find(function (x) { return x.id === id; }) || window.ALBUMS[0];
-      var hiTrack = parseInt(new URLSearchParams(location.search).get("t"), 10);
+    /* ---------- album detail ---------- */
+    var albumMount = document.querySelector("[data-album-page]");
+    if (albumMount) {
+      var qs = new URLSearchParams(location.search);
+      var a = window.ALBUMS.find(function (x) { return x.id === qs.get("id"); }) || window.ALBUMS[0];
       document.title = a.title + " — Jinyao Zhou";
-      detail.querySelector(".cover-mount").appendChild(coverEl(a, true));
-      detail.querySelector("[data-kind]").textContent = a.kind;
-      detail.querySelector("h1").textContent = a.title;
-      detail.querySelector(".desc").textContent = a.desc;
-      detail.querySelector(".stats").textContent = a.year + " · " + a.tracks.length + " TRACKS";
-      var list = detail.querySelector(".tracks-mount");
+      var label = { album: "Album", ep: "EP", mixtape: "Mixtape" }[a.type];
+      albumMount.querySelector(".art img").src = a.cover;
+      albumMount.querySelector(".art img").alt = a.title;
+      albumMount.querySelector("[data-kind]").textContent = label;
+      albumMount.querySelector("h1").textContent = a.title;
+      albumMount.querySelector(".desc").textContent = a.description;
+      albumMount.querySelector("[data-stats]").textContent = a.year + " · " + a.tracks.length + " tracks";
+      albumMount.querySelector("[data-play]").onclick = function () {
+        location.href = "track.html?album=" + a.id + "&track=" + a.tracks[0].id;
+      };
+      albumMount.querySelector("[data-shuffle-album]").onclick = function () {
+        var t = a.tracks[Math.floor(Math.random() * a.tracks.length)];
+        location.href = "track.html?album=" + a.id + "&track=" + t.id;
+      };
+      var list = albumMount.querySelector("[data-tracks]");
       a.tracks.forEach(function (t, i) {
-        var row = document.createElement("div");
-        row.className = "track" + (hiTrack === i + 1 ? " hi" : "");
-        row.innerHTML = '<span class="no">' + String(i + 1).padStart(2, "0") + "</span>" +
-          "<span>" + t.n + (t.note ? '<span class="note">' + t.note + "</span>" : "") + "</span>" +
-          '<span class="dur">' + t.min + " MIN</span>";
+        var row = document.createElement("a");
+        row.className = "track-item";
+        row.href = "track.html?album=" + a.id + "&track=" + t.id;
+        row.innerHTML =
+          '<span class="metadata no">' + String(i + 1).padStart(2, "0") + "</span>" +
+          '<span class="t">' + t.title + "</span>" +
+          '<span class="dur"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="metadata">' + t.readingTime + "</span></span>" +
+          '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>';
         list.appendChild(row);
       });
-      if (hiTrack) setTimeout(function () {
-        var el = list.querySelector(".hi"); if (el) el.scrollIntoView({ block: "center" });
-      }, 60);
     }
 
-    /* ---------- entrance animation ---------- */
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    document.querySelectorAll(".fade").forEach(function (el) { io.observe(el); });
-  });
+    /* ---------- track (lesson) page ---------- */
+    var trackMount = document.querySelector("[data-track-page]");
+    if (trackMount) {
+      var q = new URLSearchParams(location.search);
+      var alb = window.ALBUMS.find(function (x) { return x.id === q.get("album"); }) || window.ALBUMS[0];
+      var idx = Math.max(0, alb.tracks.findIndex(function (t) { return t.id === q.get("track"); }));
+      var tr = alb.tracks[idx];
+      document.title = tr.title + " — Jinyao Zhou";
 
-  /* ---------- shuffle: jump to a random track ---------- */
-  window.shuffle = function () {
-    var a = window.ALBUMS[Math.floor(Math.random() * window.ALBUMS.length)];
-    var t = Math.floor(Math.random() * a.tracks.length) + 1;
-    location.href = "album.html?id=" + a.id + "&t=" + t;
-  };
+      trackMount.querySelector("[data-back]").href = "album.html?id=" + alb.id;
+      trackMount.querySelector("[data-back] .albname").textContent = alb.title;
+      trackMount.querySelector(".thumb img").src = alb.cover;
+      trackMount.querySelector(".thumb img").alt = alb.title;
+      trackMount.querySelector("[data-trackno]").textContent = "Track " + String(idx + 1).padStart(2, "0");
+      trackMount.querySelector("h1").textContent = tr.title;
+      trackMount.querySelector("[data-albtitle]").textContent = alb.title;
+      trackMount.querySelector("[data-time]").textContent = tr.readingTime;
+
+      var st = trackMount.querySelector("[data-soundtrack]");
+      if (tr.soundtrack) st.querySelector(".name").textContent = tr.soundtrack;
+      else st.remove();
+
+      var art = trackMount.querySelector("article.lesson");
+      tr.content.split("\n\n").forEach(function (para) {
+        var p = document.createElement("p");
+        p.textContent = para;
+        art.appendChild(p);
+      });
+
+      var nav = trackMount.querySelector(".track-nav");
+      var prev = alb.tracks[idx - 1], next = alb.tracks[idx + 1];
+      nav.innerHTML =
+        (prev ? '<a href="track.html?album=' + alb.id + "&track=" + prev.id + '">← ' + prev.title + "</a>" : "<span></span>") +
+        (next ? '<a href="track.html?album=' + alb.id + "&track=" + next.id + '">' + next.title + " →</a>" : "<span></span>");
+    }
+  });
 })();

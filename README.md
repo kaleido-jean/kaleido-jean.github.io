@@ -33,9 +33,10 @@ gh repo create kaleido-jean/kaleido-jean.github.io --public --source=. --push
 - `photography.html` / `about.html`
 - `assets/site.js` — 主题切换（跟随系统 + localStorage）、程序化封面（SVG，无需图片）、Shuffle（随机跳一首 track）
 
-## 与原稿的已知差异
+## 与原稿（github.com/kaleido-jean/genz-discography）的对应关系
 
-- 标题 hero → 学术简介（按需求替换）
-- 专辑封面由 AI 图改为程序化 SVG（自包含、加载快、新专辑零成本）
-- 专辑详情从独立路由改为 `album.html?id=` 查询参数（静态站无路由）
-- Updates / 专辑内容从占位文案换成了真实经历——**日期和细节请自行核对**（尤其 Tesla 结束时间和 SVD 月份是我推断的）
+对照源码逐项复刻：设计 token（index.css 的 HSL 变量原样搬运）、字体（Barlow Condensed / Inter / JetBrains Mono）、首页 hero 的 SpiralVortex（Three.js 版用原参数方程移植成 Canvas 2D，assets/vortex.js）、全站 DancingCurves（framer-motion 路径变形移植成 rAF 插值，assets/curves.js）、真实专辑封面与照片（源仓库 assets 直接拷贝）、五张专辑与全部 track 课文（discography.ts 原样搬进 albums.js）、Track 课文页（track.html：正文 + 阅读时长 + soundtrack + 上下篇）、Shuffle 60/40 逻辑、pulse-glow / album-card-glow / fade-in 动画、整站双主题（.dark class）。
+
+仍有的差异：hero 标题区换成学术简介（用户要求）；路由用 `album.html?id=` / `track.html?album=&track=` 查询参数（静态站无 SPA 路由）；hero 增加联系 chips 和照片。
+
+**加新 track**：编辑 `assets/albums.js`，在对应专辑的 tracks 里加 `{ id, title, readingTime, content, soundtrack? }`，content 用 `\n\n` 分段——其余全自动。
