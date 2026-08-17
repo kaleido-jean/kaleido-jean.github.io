@@ -226,7 +226,11 @@ section.block.lg { padding: 64px 0; }
   font-size: 15.5px; color: hsl(var(--foreground) / .92);
 }
 .update .ev { flex: 1; }
-.update .where { font-size: 11px; color: hsl(var(--muted-foreground) / .75); white-space: nowrap; }
+.update .where { font-size: 12px; color: hsl(var(--muted-foreground) / .75); white-space: nowrap; }
+.update .where, .update .when,
+.about-updates .row .where, .about-updates .row .when {
+  text-transform: none; letter-spacing: .02em;
+}
 .update:last-child { border-bottom: none; }
 .update .when { font-size: 12px; color: hsl(var(--muted-foreground) / .6); white-space: nowrap; min-width: 66px; text-align: right; }
 
