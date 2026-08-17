@@ -43,7 +43,7 @@
 
   var SIZE = 280;          /* sim + canvas resolution (square) */
   var COUNT = 3200;        /* particles per cover */
-  var MORPH_EVERY = 7000;  /* ms between new parameter combos */
+  var MORPH_EVERY = 12000; /* ms between new parameter combos — long, so low vibration can settle */
   var sims = [];
 
   function makeSim(canvas) {
@@ -53,8 +53,11 @@
     canvas.width = SIZE; canvas.height = SIZE;
     var ctx = canvas.getContext("2d", { alpha: false });
 
-    /* per-album hue from the seed — keeps each cover's identity */
-    var hue = Math.floor(rng() * 360);
+    /* per-album color from the seed — always inside the site's coffee palette:
+       hue 22-46 (caramel..copper), moderate saturation, latte-to-cream lightness */
+    var hue = 22 + Math.floor(rng() * 24);
+    var sat = 34 + Math.floor(rng() * 30);
+    var lit = 58 + Math.floor(rng() * 16);
     var cur = randParams(rng);
     var nxt = randParams(rng);
     var morphT = 1;                    /* 0..1 progress of cur→nxt blend */
@@ -64,12 +67,29 @@
     var px = new Float32Array(COUNT), py = new Float32Array(COUNT);
     for (var i = 0; i < COUNT; i++) { px[i] = rng(); py[i] = rng(); }
 
+    /* warm-up: settle the sand before the first paint (math only, no drawing)
+       — uses a higher step so the pattern is already formed when the cover appears */
+    var PI = Math.PI;
+    for (var it = 0; it < 250; it++) {
+      for (var j = 0; j < COUNT; j++) {
+        var wx = px[j], wy = py[j];
+        var wf = cur.a * Math.sin(PI * cur.n * wx) * Math.sin(PI * cur.m * wy)
+               + cur.b * Math.sin(PI * cur.m * wx) * Math.sin(PI * cur.n * wy);
+        var wv = Math.abs(wf) * 0.05;
+        wx += (Math.random() - 0.5) * wv;
+        wy += (Math.random() - 0.5) * wv;
+        if (wx < 0) wx = -wx; else if (wx >= 1) wx = 2 - wx - 1e-4;
+        if (wy < 0) wy = -wy; else if (wy >= 1) wy = 2 - wy - 1e-4;
+        px[j] = wx; py[j] = wy;
+      }
+    }
+
     /* paint the plate */
     ctx.fillStyle = "#0d0b09";
     ctx.fillRect(0, 0, SIZE, SIZE);
 
     return {
-      canvas: canvas, ctx: ctx, hue: hue, rng: rng,
+      canvas: canvas, ctx: ctx, hue: hue, sat: sat, lit: lit, rng: rng,
       cur: cur, nxt: nxt, morphT: morphT, lastSwitch: lastSwitch,
       px: px, py: py, visible: false, settled: 0
     };
@@ -93,11 +113,11 @@
     var ctx = s.ctx, px = s.px, py = s.py;
 
     /* fade previous frame — leaves sand trails like the plate */
-    ctx.fillStyle = "rgba(13,11,9,0.18)";
+    ctx.fillStyle = "rgba(13,11,9,0.22)";
     ctx.fillRect(0, 0, SIZE, SIZE);
 
-    var PI = Math.PI, STEP = 0.045;
-    ctx.fillStyle = "hsl(" + s.hue + " 85% 62%)";
+    var PI = Math.PI, STEP = 0.018;   /* vibration strength — kept low for crisp nodal lines */
+    ctx.fillStyle = "hsl(" + s.hue + " " + s.sat + "% " + s.lit + "%)";
     for (var i = 0; i < COUNT; i++) {
       var x = px[i], y = py[i];
       var f = a * Math.sin(PI * n * x) * Math.sin(PI * m * y)
