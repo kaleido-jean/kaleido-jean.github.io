@@ -252,7 +252,7 @@ section.block.lg { padding: 64px 0; }
 .album-card:hover .art canvas { transform: scale(1.1); }
 .album-card .meta { padding: 16px; }
 .album-card h3 {
-  font-weight: 600; font-size: 16px; color: hsl(var(--foreground));
+  font-weight: 600; font-size: 19px; color: hsl(var(--foreground));
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px;
 }
 .album-card .tracks { font-size: 13px; color: hsl(var(--muted-foreground)); margin-top: 4px; }
