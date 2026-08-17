@@ -37,13 +37,81 @@
     return el;
   }
 
+  function photoImages(p) { return p.images || [p.src]; }
+
   function photoCell(p, i) {
-    var el = document.createElement("div");
+    var imgs = photoImages(p);
+    var el = document.createElement("button");
+    el.type = "button";
     el.className = "photo fade-in d" + Math.min(i + 1, 4);
-    el.innerHTML = '<img loading="lazy" src="' + p.src + '" alt="' + p.title + '">' +
+    el.setAttribute("aria-label", p.title + (imgs.length > 1 ? ", collection of " + imgs.length : ""));
+    el.innerHTML = '<img loading="lazy" src="' + imgs[0] + '" alt="">' +
+      (imgs.length > 1
+        ? '<span class="stack-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="7" width="14" height="14" rx="2"/><path d="M3 17V5a2 2 0 0 1 2-2h12"/></svg>' + imgs.length + "</span>"
+        : "") +
       '<div class="cap"><p class="t">' + p.title + '</p><p class="metadata">' +
-      (p.kind === "artwork" ? "Artwork" : "Photo") + " · " + p.date + "</p></div>";
+      (p.kind === "artwork" ? "Artwork" : "Photo") +
+      (imgs.length > 1 ? " · Series of " + imgs.length : "") + " · " + p.date + "</p></div>";
+    el.addEventListener("click", function () { openLightbox(p, 0); });
     return el;
+  }
+
+  /* ---------- lightbox: single images and pageable collections ---------- */
+  var lb = null, lbEntry = null, lbIdx = 0;
+  function ensureLightbox() {
+    if (lb) return lb;
+    lb = document.createElement("div");
+    lb.className = "lightbox";
+    lb.setAttribute("role", "dialog");
+    lb.setAttribute("aria-modal", "true");
+    lb.innerHTML =
+      '<button class="lb-close" aria-label="Close">&times;</button>' +
+      '<button class="lb-nav lb-prev" aria-label="Previous">&#8592;</button>' +
+      '<figure><img alt=""><figcaption>' +
+      '<p class="t"></p><p class="metadata"></p><p class="d"></p>' +
+      "</figcaption></figure>" +
+      '<button class="lb-nav lb-next" aria-label="Next">&#8594;</button>';
+    document.body.appendChild(lb);
+    lb.querySelector(".lb-close").addEventListener("click", closeLightbox);
+    lb.querySelector(".lb-prev").addEventListener("click", function () { stepLightbox(-1); });
+    lb.querySelector(".lb-next").addEventListener("click", function () { stepLightbox(1); });
+    lb.addEventListener("click", function (e) { if (e.target === lb) closeLightbox(); });
+    document.addEventListener("keydown", function (e) {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") closeLightbox();
+      else if (e.key === "ArrowLeft") stepLightbox(-1);
+      else if (e.key === "ArrowRight") stepLightbox(1);
+    });
+    return lb;
+  }
+  function renderLightbox() {
+    var imgs = photoImages(lbEntry);
+    lb.querySelector("img").src = imgs[lbIdx];
+    lb.querySelector(".t").textContent = lbEntry.title;
+    lb.querySelector(".metadata").textContent =
+      (lbEntry.kind === "artwork" ? "Artwork" : "Photo") + " · " + lbEntry.date +
+      (imgs.length > 1 ? " · " + (lbIdx + 1) + " / " + imgs.length : "");
+    lb.querySelector(".d").textContent = lbEntry.description || "";
+    var multi = imgs.length > 1;
+    lb.querySelector(".lb-prev").style.visibility = multi ? "visible" : "hidden";
+    lb.querySelector(".lb-next").style.visibility = multi ? "visible" : "hidden";
+  }
+  function openLightbox(entry, idx) {
+    ensureLightbox();
+    lbEntry = entry; lbIdx = idx || 0;
+    renderLightbox();
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
+    lb.querySelector(".lb-close").focus();
+  }
+  function closeLightbox() {
+    lb.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  function stepLightbox(dir) {
+    var n = photoImages(lbEntry).length;
+    lbIdx = (lbIdx + dir + n) % n;
+    renderLightbox();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
