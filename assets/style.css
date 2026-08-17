@@ -221,12 +221,14 @@ section.block.lg { padding: 64px 0; }
 /* ---------------- updates strip ---------------- */
 .updates { background: hsl(var(--card) / .8); border-radius: 8px; padding: 12px 20px; }
 .update {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: baseline; gap: 16px;
   padding: 9px 0; border-bottom: 1px dashed hsl(var(--border) / .5);
   font-size: 13px; color: hsl(var(--muted-foreground));
 }
+.update .ev { flex: 1; }
+.update .where { font-size: 11px; color: hsl(var(--muted-foreground) / .75); white-space: nowrap; }
 .update:last-child { border-bottom: none; }
-.update .when { font-size: 12px; color: hsl(var(--muted-foreground) / .6); margin-left: 16px; white-space: nowrap; }
+.update .when { font-size: 12px; color: hsl(var(--muted-foreground) / .6); white-space: nowrap; min-width: 66px; text-align: right; }
 
 /* ---------------- album cards ---------------- */
 .grid-albums { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -367,12 +369,15 @@ article.lesson p { margin: 0 0 16px; }
 }
 .about-updates .card:hover { box-shadow: var(--glow-primary); }
 .about-updates .row {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: baseline; gap: 16px;
   padding: 12px 0; border-bottom: 1px dashed hsl(var(--border));
   font-size: 14px;
 }
+.about-updates .row .ev { flex: 1; }
+.about-updates .row .where { white-space: nowrap; }
+@media (max-width: 640px) { .about-updates .row { flex-wrap: wrap; } .about-updates .row .where { margin-left: auto; } }
 .about-updates .row:last-child { border-bottom: none; }
-.about-updates .row .when { margin-left: 16px; white-space: nowrap; font-size: 12px; }
+.about-updates .row .when { white-space: nowrap; font-size: 12px; min-width: 66px; text-align: right; }
 
 /* ---------------- off the record (about) ---------------- */
 .off-record { margin-bottom: 56px; }
