@@ -223,11 +223,11 @@ section.block.lg { padding: 64px 0; }
 .update {
   display: flex; align-items: baseline; gap: 16px;
   padding: 10px 0; border-bottom: 1px dashed hsl(var(--border) / .5);
-  font-size: 15.5px; color: hsl(var(--foreground) / .92);
+  font-size: 12px; color: hsl(var(--foreground) / .92);
 }
 .update .ev { flex: 1; }
 .update .where { color: hsl(var(--muted-foreground)); white-space: nowrap; }
-.update .when { color: hsl(var(--muted-foreground)); white-space: nowrap; min-width: 78px; text-align: right; }
+.update .when { color: hsl(var(--muted-foreground)); white-space: nowrap; min-width: 62px; text-align: right; }
 @media (max-width: 640px) { .update { flex-wrap: wrap; } .update .where { margin-left: auto; } }
 .update:last-child { border-bottom: none; }
 
