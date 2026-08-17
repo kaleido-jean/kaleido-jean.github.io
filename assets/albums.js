@@ -1,68 +1,81 @@
 /* ============================================================
-   Discography data — ported verbatim from src/data/discography.ts
-   of the Lovable draft. Each track is a readable lesson with
-   full content, reading time, and optional soundtrack.
+   Discography data — real projects from the resume.
+   type: "album"/"ep" = projects (home: Albums & EPs)
+         "mixtape"    = casual notes & essays (home: Mixtapes)
+   Each track: { id, title, readingTime, content, soundtrack? }
+   content paragraphs are separated by "\n\n".
    ============================================================ */
 window.ALBUMS = [
   {
-    id: "robot-kinematics",
-    title: "Robot Kinematics",
+    id: "human-elevator",
+    title: "HUMAN: Elevator Odyssey",
+    type: "album",
+    year: "2026",
+    description: "MRSD capstone on a Unitree G1 humanoid: navigation and loco-manipulation in multi-story human spaces, with riding the elevator as the core cross-floor skill. My lane: classical arm control, hand-eye calibration, and close-range perception.",
+    tracks: [
+      { id: "he-1", title: "Visual Servoing & Button Pressing", readingTime: "8 min", content: "Pressing an elevator button with a humanoid is a full-stack problem in miniature: find a target that occupies a handful of pixels, keep tracking it while the robot walks and sways, and close the loop between a 6-DoF pose estimate and an arm command.\n\nMy piece of it is the classical control of the G1's arms — getting a stock manipulator to hold a pose accurately enough that a fingertip lands on a button, which turns out to demand far more care than the spec sheet suggests. Gravity compensation and careful gain work matter more than any single clever idea.\n\nThe broader stack composes visual servoing of the base, arm motion, and press verification into one repeatable skill." },
+      { id: "he-2", title: "Hand-Eye Calibration with RealSense D435i", readingTime: "6 min", content: "Every downstream skill inherits the quality of your calibration. If the camera-to-hand transform is a centimeter off, every 'perfect' detection still misses the button.\n\nI own the hand-eye calibration on our G1: RealSense D435i on a moving, walking robot, where mounting tolerances and cable strain drift the extrinsics over weeks of testing. The discipline is treating calibration as a maintained artifact — re-verified before every major test session — rather than a one-time setup step.\n\nLesson carried over from production validation: the number you measured last month is a hypothesis, not a fact." },
+      { id: "he-3", title: "Reading Doors and Floors", readingTime: "7 min", content: "An elevator is a state machine you can only observe from outside. Two perception problems gate every ride: is the door open, and which floor are we on?\n\nFor door state I work with the Livox Mid-360 LiDAR — a flat closed surface and an open passage look completely different in a point cloud, which makes depth a more reliable door sensor than RGB in bad lighting.\n\nFloor detection layers complementary signals, because any single channel fails somewhere: displays differ per elevator, and network access inside a metal box is exactly as bad as you'd expect." },
+      { id: "he-4", title: "Composing Skills into Missions", readingTime: "8 min", content: "The end goal is a natural-language command — 'go to the reception on the second floor' — turning into a building-wide mission: hallway traversal, elevator rides, and recovery when a step fails.\n\nEach skill is a self-contained module with explicit success, failure, and retry semantics, so the mission layer can reason about them like tracks on an album: sequence them, retry them, skip them.\n\nModularity is not an aesthetic preference here. It's what makes a two-semester team project debuggable when six subsystems have to work in the same five-second window in front of an elevator." }
+    ]
+  },
+  {
+    id: "battery-abuse",
+    title: "Battery Abuse & Validation",
+    type: "album",
+    year: "2022–25",
+    description: "Three and a half years at Tesla Shanghai — two as a battery abuse engineer, one and a half as a technical project manager. Pushing packs to their worst case: thermal, electrical, mechanical.",
+    tracks: [
+      { id: "ba-1", title: "Structural Battery, Blade LFP", readingTime: "8 min", content: "I supported the development of Tesla's first Model Y structural battery built on blade LFP cells — a design where the pack stops being a component and becomes the car's floor.\n\nStructural batteries collapse the boundary between battery engineering and vehicle engineering: a crash requirement is now a cell requirement, and a cell swelling behavior is now a body-in-white concern.\n\nWorking at that boundary taught me to distrust clean interfaces. The interesting failures always live in the seams between two teams' assumptions." },
+      { id: "ba-2", title: "Prismatic Module Abuse", readingTime: "9 min", content: "I led abuse validation for Tesla's first in-house prismatic module program — the full menu: thermal, electrical, and mechanical abuse.\n\nAbuse testing is adversarial engineering. The job is not to confirm the design works; it's to find the conditions under which it doesn't, and to make those conditions boring and well-documented before production makes them expensive.\n\nThis is the mindset I now point at robots: a safety argument is only as good as the worst case you actually exercised." },
+      { id: "ba-3", title: "TPM Across Ten Teams", readingTime: "7 min", content: "As a technical project manager I supported dozens of cost-down and sustaining projects, coordinating CAE, reliability, electronics, integration, manufacturing, process, quality, service, compliance, and supply chain.\n\nTPM work is applied systems engineering: the technical problem is rarely the bottleneck — the interface between two teams' schedules is.\n\nWhat survived from those years: write things down, quantify the disagreement, and never let an open risk hide inside a status meeting." },
+      { id: "ba-4", title: "What Production Teaches About Safety", readingTime: "6 min", content: "Lab validation and production validation are different sports. In the lab you control the variables; in production the variables come to you — supplier drift, process excursions, the one fixture that was rebuilt slightly differently.\n\nThree years of watching safety arguments meet reality left me with the question that still drives my robotics work: how do you know a system holds up in its worst case — and how do you notice when your own argument is wrong?\n\nThat question transfers cleanly from battery packs to robot policies. The materials change; the epistemology doesn't." }
+    ]
+  },
+  {
+    id: "deep-learning",
+    title: "Deep Learning",
     type: "album",
     year: "2025",
-    description: "A deep dive into forward and inverse kinematics, DH parameters, and manipulator workspace analysis. This album covers the mathematical foundations that make robot arms move with precision.",
+    description: "The 11-785 run at CMU: building and training the classics — CNNs, RNNs, and transformers — with enough ablation discipline to know why they work.",
     tracks: [
-      { id: "rk-1", title: "Forward Kinematics & DH Convention", readingTime: "8 min", content: "Forward kinematics maps joint parameters to end-effector position using Denavit-Hartenberg convention. Each joint contributes a transformation matrix, and their product gives the final pose.\n\nThe DH convention provides a systematic way to assign coordinate frames to each link of a manipulator. Four parameters define each transformation: link length (a), link twist (α), link offset (d), and joint angle (θ).\n\nFor a revolute joint, θ is the variable; for prismatic, d varies. The homogeneous transformation between consecutive frames follows a standard form, making it elegant to compute the full chain." },
-      { id: "rk-2", title: "Inverse Kinematics Solutions", readingTime: "12 min", content: "Inverse kinematics is the problem of finding joint angles that achieve a desired end-effector pose. Unlike FK, IK often has multiple solutions or none at all.\n\nAnalytical methods work for robots with specific geometries (e.g., spherical wrist). Numerical methods like Newton-Raphson or Jacobian pseudoinverse handle general cases but may converge to local minima.\n\nRedundant manipulators (more DOF than task space) have infinite solutions, requiring optimization criteria like minimum energy or obstacle avoidance." },
-      { id: "rk-3", title: "Workspace Analysis", readingTime: "6 min", content: "The workspace of a manipulator is the set of all points reachable by the end-effector. Dexterous workspace is the subset where any orientation is achievable.\n\nWorkspace shape depends on joint limits, link lengths, and kinematic structure. Singularities occur at workspace boundaries where the Jacobian loses rank." },
-      { id: "rk-4", title: "Jacobian & Velocity Kinematics", readingTime: "10 min", content: "The Jacobian matrix relates joint velocities to end-effector velocities. It's fundamental for velocity control, force analysis, and singularity detection.\n\nNear singularities, the Jacobian becomes ill-conditioned, causing large joint velocities for small Cartesian motions. Damped least squares (DLS) methods provide numerically stable solutions." }
+      { id: "dl-1", title: "Face Classification & Verification", readingTime: "7 min", content: "Face recognition as coursework sounds solved until you have to make the margin between 'same person' and 'different person' survive a held-out distribution.\n\nI worked through CNN backbones — ResNet, ConvNeXt — and margin-based losses like ArcFace, with CutMix and heavy augmentation to keep the embedding space honest.\n\nThe useful skill was not any single architecture: it was learning to read training curves like telemetry and ablate one variable at a time." },
+      { id: "dl-2", title: "Speech Recognition: pBLSTM & CTC", readingTime: "8 min", content: "Before attention, sequence compression: pyramidal bidirectional LSTMs halve the time resolution per layer, which is what makes long utterances tractable.\n\nCTC loss handles the alignment problem — you never know exactly which frame maps to which character, so you marginalize over all valid alignments.\n\nRNN training is a patience discipline: gradient clipping, scheduling, and the humility to accept that some divergences are just bad seeds." },
+      { id: "dl-3", title: "Speech Recognition: Transformer", readingTime: "8 min", content: "The transformer encoder-decoder rebuild of the same task made the contrast explicit: attention buys you parallelism and long-range context, and charges you in data hunger and scheduler sensitivity.\n\nGetting a from-scratch transformer to converge on speech is mostly warm-up schedules, normalization placement, and regularization tuning.\n\nHaving built both generations of architecture on the same dataset is the kind of comparison a paper reading can't give you." },
+      { id: "dl-4", title: "The Ablation Grind", readingTime: "6 min", content: "Across both projects the real curriculum was ablations: learning rate, normalization, schedulers, augmentation — one axis at a time, logged and compared.\n\nUnderfitting and overfitting are diagnoses, not vibes. The fix follows from which one you're actually in, and the only way to know is a controlled comparison.\n\nThis is validation engineering applied to models instead of hardware — same discipline, different substrate." }
     ]
   },
   {
-    id: "robot-perception",
-    title: "Robot Perception",
-    type: "album",
-    year: "2025",
-    description: "Exploring how robots see and understand the world through computer vision, deep learning, and sensor fusion. From raw pixels to semantic understanding.",
-    tracks: [
-      { id: "rp-1", title: "Camera Models & Calibration", readingTime: "7 min", content: "The pinhole camera model projects 3D points to 2D image coordinates through intrinsic and extrinsic parameters. Calibration estimates these parameters using checkerboard patterns or other known geometries.\n\nLens distortion—both radial and tangential—must be corrected for accurate measurements. Zhang's method provides a flexible calibration approach using multiple views of a planar pattern." },
-      { id: "rp-2", title: "Feature Detection & Matching", readingTime: "9 min", content: "Features are distinctive image regions useful for matching across views. SIFT, SURF, and ORB extract keypoints with descriptors invariant to scale, rotation, and illumination changes.\n\nMatching strategies include brute-force and FLANN-based approaches. RANSAC filters outliers to find consistent geometric transformations between matched feature sets." },
-      { id: "rp-3", title: "Deep Learning for Object Detection", readingTime: "15 min", content: "Modern object detection uses CNN architectures like YOLO, SSD, and Faster R-CNN. These networks jointly predict bounding boxes and class probabilities in a single forward pass.\n\nTransformer-based detectors (DETR) treat detection as a set prediction problem, eliminating hand-designed components like anchor boxes and NMS." },
-      { id: "rp-4", title: "Stereo Vision & Depth Estimation", readingTime: "11 min", content: "Stereo vision computes depth from disparity between left and right camera images. Epipolar geometry constrains the search for correspondences to a single line.\n\nSemi-global matching (SGM) and deep learning methods (PSMNet, RAFT-Stereo) produce dense disparity maps suitable for 3D reconstruction and navigation." }
-    ]
-  },
-  {
-    id: "motion-planning",
-    title: "Motion Planning",
-    type: "album",
-    year: "2024",
-    description: "Algorithms that help robots navigate from A to B while avoiding obstacles. From classical graph search to modern sampling-based planners.",
-    tracks: [
-      { id: "mp-1", title: "Configuration Space", readingTime: "6 min", content: "Configuration space (C-space) represents all possible robot configurations. Obstacles in workspace map to forbidden regions in C-space. Planning happens in C-space where the robot is a point.\n\nFor a 2D robot with 3 DOF (x, y, θ), C-space is 3-dimensional. Computing C-space obstacles exactly is expensive; sampling-based methods avoid explicit computation." },
-      { id: "mp-2", title: "RRT & RRT*", readingTime: "10 min", content: "Rapidly-exploring Random Trees (RRT) grow a tree from the start configuration by randomly sampling and extending toward new points. RRT is probabilistically complete but not optimal.\n\nRRT* adds a rewiring step that asymptotically converges to the optimal path. Informed RRT* focuses sampling in an ellipsoidal region to accelerate convergence." },
-      { id: "mp-3", title: "A* and Graph Search", readingTime: "8 min", content: "A* finds shortest paths on graphs using a heuristic to guide search. With an admissible heuristic, A* is optimal and complete.\n\nVariants include weighted A* (faster, suboptimal), D* Lite (dynamic replanning), and ARA* (anytime with improving bounds). Grid-based representations discretize C-space for graph search." }
-    ]
-  },
-  {
-    id: "control-systems",
-    title: "Control Systems",
+    id: "adverse-fruit",
+    title: "Fruit Segmentation in the Dark",
     type: "ep",
-    year: "2024",
-    description: "Short series on feedback control: PID tuning, state-space methods, and modern optimal control for robotics applications.",
+    year: "2025",
+    description: "Fruit identification and segmentation under adverse illumination — a two-move pipeline: illumination-invariant features plus low-light enhancement.",
     tracks: [
-      { id: "cs-1", title: "PID Control Fundamentals", readingTime: "7 min", content: "PID control combines proportional, integral, and derivative terms to minimize tracking error. Proper tuning balances responsiveness, stability, and steady-state accuracy.\n\nZiegler-Nichols provides initial tuning, but modern methods like relay feedback auto-tuning and optimization-based approaches yield better performance for robotic systems." },
-      { id: "cs-2", title: "State-Space Control", readingTime: "12 min", content: "State-space representation models systems as first-order differential equations: ẋ = Ax + Bu, y = Cx + Du. This framework handles MIMO systems naturally.\n\nPole placement and LQR design full-state feedback controllers. Observers (Luenberger, Kalman filter) estimate unmeasured states from available outputs." }
+      { id: "af-1", title: "YOLA: Illumination-Invariant Features", readingTime: "6 min", content: "Orchard lighting doesn't cooperate: harsh sun, deep shade, backlight — often in the same image. A detector trained on nice lighting quietly degrades.\n\nWe applied YOLA, an illumination-invariant feature extractor, in training with a YOLO architecture — attacking the problem at the feature level rather than hoping augmentation covers it.\n\nAs team leader I cared about the evaluation as much as the model: if your test set doesn't contain the ugly lighting, your accuracy number is fiction." },
+      { id: "af-2", title: "SGZ: Seeing Before Inferring", readingTime: "5 min", content: "For genuinely dark inputs we added SGZ, an image-enhancement module, to pre-process low-light frames before inference.\n\nEnhancement-then-detect is a classic pipeline trade: you buy visibility at the risk of amplifying noise into false positives. Where the crossover sits is an empirical question, not a doctrinal one.\n\nSmall project, honest lesson: fix the input distribution before demanding more of the model." }
     ]
   },
   {
-    id: "slam-mapping",
-    title: "SLAM & Mapping",
-    type: "mixtape",
-    year: "2024",
-    description: "Experimental notes on Simultaneous Localization and Mapping—from EKF-SLAM to modern visual-inertial odometry and neural implicit maps.",
+    id: "mech-era",
+    title: "Mechanical Era",
+    type: "ep",
+    year: "2019–21",
+    description: "The undergrad years at UM-SJTU Joint Institute — when robots were linkages, motors, and machined parts. Three builds that taught me hardware has opinions.",
     tracks: [
-      { id: "sm-1", title: "EKF-SLAM Basics", readingTime: "9 min", content: "EKF-SLAM estimates robot pose and landmark positions jointly using an Extended Kalman Filter. The state vector grows with each new landmark, making it O(n²) in computation.\n\nSparsification and submapping techniques address scalability. Feature-based SLAM extracts and tracks landmarks; direct methods use raw sensor data." },
-      { id: "sm-2", title: "Visual-Inertial Odometry", readingTime: "11 min", content: "VIO fuses camera and IMU data for robust ego-motion estimation. Tightly-coupled approaches jointly optimize visual and inertial residuals.\n\nSystems like VINS-Mono and OKVIS achieve real-time performance on embedded platforms. Keyframe-based marginalization keeps the optimization window bounded." },
-      { id: "sm-3", title: "Neural Implicit Maps", readingTime: "8 min", content: "Neural radiance fields (NeRF) and signed distance functions (SDF) represent 3D scenes as continuous neural networks. iMAP and NICE-SLAM use these for real-time mapping.\n\nAdvantages include memory efficiency and novel view synthesis. Challenges remain in dynamic scenes and large-scale environments." }
+      { id: "me-1", title: "Bolt-Tightening Tower Climber", readingTime: "6 min", content: "Capstone: a robot that climbs the vertical steel angle of a power transmission tower and tightens its bolts, so a human doesn't have to.\n\nWe designed a worm-like climbing mechanism and achieved gait control with a Raspberry Pi, electromagnets, and stepper motors. As team leader I carried it from concept through the design expo — it took the Gold Award.\n\nClimbing steel teaches respect for grip force budgets: gravity files bugs faster than any reviewer." },
+      { id: "me-2", title: "Transformable Wheel Robot", readingTime: "5 min", content: "A wheel that becomes a legged wheel: we used the toggle positions of a rocker-slider linkage plus a self-locking mechanism so the transformation needs no extra actuator.\n\nThe elegance target was mechanical, not computational — encode the mode switch into the linkage's own geometry.\n\nThis is the project that made me love mechanisms: the best ones compute with steel." },
+      { id: "me-3", title: "RoboMaster Standard Robot", readingTime: "6 min", content: "University championship team: I modified the chassis and designed a bottom-up projectile feeding path between a fixed magazine and a rotatable barrel.\n\nI also led the 'double-barrel' technical solution — designing and validating shooting precision before and after the barrel switches around the roll axis. The team took a First Prize that season.\n\nCompetition robotics is production engineering at student scale: if it only works in the workshop, it doesn't work." }
+    ]
+  },
+  {
+    id: "field-notes",
+    title: "Field Notes",
+    type: "mixtape",
+    year: "2026",
+    description: "Loose essays and notes — whatever doesn't fit an album. New tracks appear whenever something is worth writing down.",
+    tracks: [
+      { id: "fn-1", title: "Why a Discography?", readingTime: "3 min", content: "Albums force curation. A pile of projects is a junk drawer; an album has a tracklist, a year, and a reason to exist.\n\nSo this site organizes work the way musicians organize output: albums for the big projects, EPs for the compact ones, and this mixtape for everything unpolished.\n\nIf you're reading liner notes this deep — the sand patterns on every cover are Chladni figures, simulated live from the plate equation. Different album, different resonance." }
     ]
   }
 ];

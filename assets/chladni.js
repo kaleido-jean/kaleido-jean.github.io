@@ -40,11 +40,12 @@
      So: only b=+1 and only m,n of the SAME parity — closed figures
      (rings, florets, lattices), never straight diagonals. */
   var MODES = {
-    "robot-kinematics": [{ m: 1, n: 3, a: 1, b: 1 }, { m: 3, n: 5, a: 1, b: 1 }],
-    "robot-perception": [{ m: 2, n: 4, a: 1, b: 1 }, { m: 1, n: 5, a: 1, b: 1 }],
-    "motion-planning":  [{ m: 2, n: 6, a: 1, b: 1 }, { m: 3, n: 7, a: 1, b: 1 }],
-    "control-systems":  [{ m: 1, n: 7, a: 1, b: 1 }, { m: 4, n: 6, a: 1, b: 1 }],
-    "slam-mapping":     [{ m: 2, n: 8, a: 1, b: 1 }, { m: 5, n: 7, a: 1, b: 1 }]
+    "human-elevator": [{ m: 1, n: 3, a: 1, b: 1 }, { m: 3, n: 5, a: 1, b: 1 }],
+    "battery-abuse":  [{ m: 1, n: 7, a: 1, b: 1 }, { m: 4, n: 6, a: 1, b: 1 }],
+    "deep-learning":  [{ m: 2, n: 6, a: 1, b: 1 }, { m: 3, n: 7, a: 1, b: 1 }],
+    "adverse-fruit":  [{ m: 2, n: 4, a: 1, b: 1 }, { m: 1, n: 5, a: 1, b: 1 }],
+    "mech-era":       [{ m: 2, n: 8, a: 1, b: 1 }, { m: 5, n: 7, a: 1, b: 1 }],
+    "field-notes":    [{ m: 4, n: 8, a: 1, b: 1 }, { m: 3, n: 9, a: 1, b: 1 }]
   };
   function randParams(rng) {
     var m = 1 + Math.floor(rng() * 7);
