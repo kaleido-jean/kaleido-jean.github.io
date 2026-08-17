@@ -336,7 +336,7 @@ article.lesson p { margin: 0 0 16px; }
 .track-nav a:hover { color: hsl(var(--foreground)); }
 
 /* ---------------- about ---------------- */
-.about-prose { margin-bottom: 64px; }
+.about-prose { margin-bottom: 40px; }
 .about-prose h1 { font-size: clamp(36px, 5vw, 48px); font-weight: 700; margin-bottom: 24px; }
 .about-prose p { color: hsl(var(--muted-foreground)); line-height: 1.65; margin: 0 0 16px; max-width: 65ch; }
 .about-updates h2 { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
