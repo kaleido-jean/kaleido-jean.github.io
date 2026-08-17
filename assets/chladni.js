@@ -65,9 +65,16 @@
     }
   }
 
-  var SIZE = 360;          /* sim + canvas resolution (square) */
-  var COUNT = 9000;        /* fine sand: many small grains, not few big ones */
-  var MORPH_EVERY = 12000; /* ms between new parameter combos — long, so low vibration can settle */
+  var SIZE = 360;           /* sim + canvas resolution (square) */
+
+  /* the simulator's two global sliders */
+  var VIBRATION = 0.20;     /* vibration strength, 0..1 — width/liveliness of the sand lines */
+  var PARTICLES = 1.0;      /* number of particles, 0..1 of MAX_COUNT */
+
+  var MAX_COUNT = 20000;
+  var COUNT = Math.round(MAX_COUNT * PARTICLES);
+  var JITTER = VIBRATION * 0.03;          /* live jitter derived from vibration strength */
+  var MORPH_EVERY = 12000;  /* ms between new parameter combos */
   var sims = [];
 
   function makeSim(canvas) {
@@ -91,7 +98,7 @@
     for (var i = 0; i < COUNT; i++) { px[i] = rng(); py[i] = rng(); }
 
     /* warm-up: settle the sand before the first paint (math only, no drawing) */
-    for (var it = 0; it < 80; it++) physics(px, py, COUNT, cur.m, cur.n, cur.a, cur.b, 0.004);
+    for (var it = 0; it < 80; it++) physics(px, py, COUNT, cur.m, cur.n, cur.a, cur.b, JITTER);
 
     /* paint the plate */
     ctx.fillStyle = "#0d0b09";
@@ -114,14 +121,14 @@
     }
 
     var ctx = s.ctx, px = s.px, py = s.py;
-    physics(px, py, COUNT, s.cur.m, s.cur.n, s.cur.a, s.cur.b, 0.0035);
+    physics(px, py, COUNT, s.cur.m, s.cur.n, s.cur.a, s.cur.b, JITTER);
 
     /* fade previous frame — leaves faint sand trails */
-    ctx.fillStyle = "rgba(13,11,9,0.28)";
+    ctx.fillStyle = "rgba(13,11,9,0.20)";
     ctx.fillRect(0, 0, SIZE, SIZE);
     ctx.fillStyle = "hsl(" + s.hue + " " + s.sat + "% " + s.lit + "%)";
     for (var i = 0; i < COUNT; i++) {
-      ctx.fillRect((px[i] * SIZE) | 0, (py[i] * SIZE) | 0, 1, 1);
+      ctx.fillRect((px[i] * SIZE) | 0, (py[i] * SIZE) | 0, 1.5, 1.5);
     }
   }
 
