@@ -125,6 +125,12 @@
         .forEach(function (a, i) { mount.appendChild(albumCard(a, i)); });
     });
     document.querySelectorAll("[data-photos]").forEach(function (mount) {
+      if (!window.PHOTOS.length) {
+        var sec = mount.closest("section");
+        if (mount.hasAttribute("data-empty-hide") && sec) { sec.hidden = true; return; }
+        mount.outerHTML = '<p class="metadata" style="padding:8px 0 40px">Nothing released on this side yet — check back soon.</p>';
+        return;
+      }
       window.PHOTOS.forEach(function (p, i) { mount.appendChild(photoCell(p, i)); });
     });
 

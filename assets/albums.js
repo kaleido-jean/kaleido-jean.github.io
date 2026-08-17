@@ -86,12 +86,9 @@ window.ALBUMS = [
    A collection:     { images: ["assets/a.jpg", "assets/b.jpg", ...], ... }
    Collections show a count badge and open as a pageable lightbox. */
 window.PHOTOS = [
-  { id: "p1", src: "assets/photo-1.jpg", kind: "photo", title: "Neon Frequencies", description: "Urban nightscape captured in long exposure", date: "2025.01" },
-  { id: "p2", src: "assets/photo-2.jpg", kind: "photo", title: "Light Geometry", description: "Abstract light painting experiment", date: "2025.02" },
-  { id: "p3", src: "assets/photo-3.jpg", kind: "photo", title: "Mechanical Soul", description: "Close-up of robotic mechanisms", date: "2024.11" },
-  { id: "p4", src: "assets/photo-4.jpg", kind: "photo", title: "Blue Hour", description: "Mountain landscape at twilight", date: "2024.09" },
-  { id: "p5", images: ["assets/photo-2.jpg", "assets/photo-4.jpg", "assets/photo-1.jpg"], kind: "artwork",
-    title: "Light Studies, Vol. 1", description: "Placeholder series — swap in a real collection", date: "2026" }
+  /* Add entries as work lands:
+     single:     { id, src: "assets/x.jpg", kind: "photo"|"artwork", title, description, date }
+     collection: { id, images: ["assets/a.jpg", ...], kind, title, description, date } */
 ];
 
 /* 60% chance of a track, 40% an album — same as getRandomItem() in source */
