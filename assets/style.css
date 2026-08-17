@@ -353,6 +353,14 @@ article.lesson p { margin: 0 0 16px; }
 .about-updates .row:last-child { border-bottom: none; }
 .about-updates .row .when { margin-left: 16px; white-space: nowrap; font-size: 12px; }
 
+/* ---------------- off the record (about) ---------------- */
+.off-record { margin-bottom: 56px; }
+.off-record h2 { font-size: 24px; font-weight: 700; margin-bottom: 18px; }
+.off-record ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.off-record li { line-height: 1.7; color: hsl(var(--foreground) / .92); }
+.off-record a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: hsl(var(--border)); transition: color .15s; }
+.off-record a:hover { color: hsl(var(--primary)); text-decoration-color: currentColor; }
+
 /* ---------------- footer ---------------- */
 footer.site { border-top: 1px solid hsl(var(--border)); padding: 16px 0; }
 footer.site .container { display: flex; align-items: center; justify-content: space-between; }
