@@ -87,8 +87,8 @@ window.ALBUMS = [
    Collections show a count badge and open as a pageable lightbox. */
 /* Career/status timeline — About shows all, home shows the first three */
 window.UPDATES = [
-  { ev: "🛗 Spring Validation Demo: elevator skill on the Unitree G1", where: "CMU, Pittsburgh", when: "May 2026" },
-  { ev: "🤖 Started the HUMAN capstone, sponsored by FieldAI", where: "CMU, Pittsburgh", when: "Jan 2026" },
+  { ev: "🛗 Spring Validation Demo: elevator skill on the Unitree G1", where: "Carnegie Mellon University, Pittsburgh", when: "May 2026" },
+  { ev: "🤖 Started the HUMAN capstone, sponsored by FieldAI", where: "Carnegie Mellon University, Pittsburgh", when: "Jan 2026" },
   { ev: "🎓 Admitted to the Robotics Master's Program (MRSD)", where: "Carnegie Mellon University, Pittsburgh", when: "Aug 2025" },
   { ev: "⚡ Transferred to Battery Safety Engineer", where: "Tesla, Shanghai", when: "Oct 2023" },
   { ev: "🔧 Converted to full-time as Technical Project Manager, Battery Engineering", where: "Tesla, Shanghai", when: "Aug 2022" },
