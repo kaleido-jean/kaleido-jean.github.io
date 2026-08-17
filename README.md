@@ -27,11 +27,10 @@ gh repo create kaleido-jean/kaleido-jean.github.io --public --source=. --push
 
 ## 结构
 
-- `index.html` — 学术式简介 hero（奶油色）+ Updates + Discography/Photography 预览
-- `discography.html` — 全部专辑
-- `album.html?id=<slug>` — 专辑详情（tracklist 从 albums.js 渲染；`&t=N` 高亮第 N 首）
+- `index.html` — 学术式简介 hero（SpiralVortex 星云背景）+ Updates + Discography/Photography 预览
+- `discography.html` — 全部专辑 · `album.html?id=<slug>` — 专辑详情 · `track.html?album=<slug>&track=<id>` — 课文页
 - `photography.html` / `about.html`
-- `assets/site.js` — 主题切换（跟随系统 + localStorage）、程序化封面（SVG，无需图片）、Shuffle（随机跳一首 track）
+- `assets/site.js` 渲染与主题 · `assets/vortex.js` 首页星云 · `assets/curves.js` 全站舞动曲线 · `assets/albums.js` 全部内容数据
 
 ## 与原稿（github.com/kaleido-jean/genz-discography）的对应关系
 
