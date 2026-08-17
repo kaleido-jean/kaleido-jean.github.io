@@ -166,15 +166,14 @@ a { color: inherit; text-decoration: none; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .chip {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 13px; font-weight: 500;
-  padding: 8px 14px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 999px;
   border: 1px solid hsl(var(--border));
   background: hsl(var(--card) / .7);
   transition: border-color .15s, color .15s;
 }
 .chip:hover { border-color: hsl(var(--primary)); color: hsl(var(--primary)); }
-.chip svg { width: 14px; height: 14px; }
+.chip svg { width: 17px; height: 17px; }
 
 .hero-photo img {
   width: 100%; max-width: 240px; aspect-ratio: 3/4; object-fit: cover;
