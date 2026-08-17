@@ -124,6 +124,16 @@
         .slice(0, limit)
         .forEach(function (a, i) { mount.appendChild(albumCard(a, i)); });
     });
+    document.querySelectorAll("[data-updates]").forEach(function (mount) {
+      var limit = parseInt(mount.dataset.limit, 10) || window.UPDATES.length;
+      window.UPDATES.slice(0, limit).forEach(function (u) {
+        var row = document.createElement("div");
+        row.className = "update";
+        row.innerHTML = '<span class="ev">' + u.ev + '</span><span class="where">' + u.where + '</span><span class="when">' + u.when + "</span>";
+        mount.appendChild(row);
+      });
+    });
+
     document.querySelectorAll("[data-photos]").forEach(function (mount) {
       if (!window.PHOTOS.length) {
         var sec = mount.closest("section");
