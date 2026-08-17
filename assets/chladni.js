@@ -34,18 +34,22 @@
   /* Every album gets a FIXED pair of modes and alternates between them —
      hand-picked so no two albums share a figure. |a| = |b| = 1 keeps the
      classic symmetric Chladni look. Unknown seeds fall back to a seeded pair. */
+  /* Diagonal-free selection. With |a|=|b| the plate equation has exact
+     diagonal nodal lines in two cases: b=-1 puts sand on the main diagonal
+     (f≡0 on y=x), and b=+1 with m+n odd puts it on the anti-diagonal.
+     So: only b=+1 and only m,n of the SAME parity — closed figures
+     (rings, florets, lattices), never straight diagonals. */
   var MODES = {
-    "robot-kinematics": [{ m: 1, n: 3, a: 1, b: 1 },  { m: 2, n: 5, a: 1, b: 1 }],
-    "robot-perception": [{ m: 2, n: 3, a: 1, b: 1 },  { m: 1, n: 5, a: 1, b: -1 }],
-    "motion-planning":  [{ m: 3, n: 4, a: 1, b: 1 },  { m: 2, n: 4, a: 1, b: -1 }],
-    "control-systems":  [{ m: 1, n: 2, a: 1, b: -1 }, { m: 3, n: 5, a: 1, b: -1 }],
-    "slam-mapping":     [{ m: 2, n: 6, a: 1, b: 1 },  { m: 4, n: 5, a: 1, b: -1 }]
+    "robot-kinematics": [{ m: 1, n: 3, a: 1, b: 1 }, { m: 3, n: 5, a: 1, b: 1 }],
+    "robot-perception": [{ m: 2, n: 4, a: 1, b: 1 }, { m: 1, n: 5, a: 1, b: 1 }],
+    "motion-planning":  [{ m: 2, n: 6, a: 1, b: 1 }, { m: 3, n: 7, a: 1, b: 1 }],
+    "control-systems":  [{ m: 1, n: 7, a: 1, b: 1 }, { m: 4, n: 6, a: 1, b: 1 }],
+    "slam-mapping":     [{ m: 2, n: 8, a: 1, b: 1 }, { m: 5, n: 7, a: 1, b: 1 }]
   };
   function randParams(rng) {
     var m = 1 + Math.floor(rng() * 7);
-    var n = 1 + Math.floor(rng() * 7);
-    if (m === n) n = (n % 7) + 1;
-    return { m: m, n: n, a: 1, b: rng() < 0.5 ? -1 : 1 };
+    var n = m + 2 * (1 + Math.floor(rng() * 3));   /* same parity, m ≠ n */
+    return { m: m, n: n, a: 1, b: 1 };
   }
 
   /* one physics step — the simulator's own rule: a random walk whose step
@@ -74,6 +78,10 @@
   var VIBRATION = 0.20;     /* vibration strength, 0..1 — width/liveliness of the sand lines */
   var PARTICLES = 1.0;      /* number of particles, 0..1 of MAX_COUNT */
 
+  /* unified palette: plate = the site's heading chocolate, sand = its cream */
+  var PLATE = "hsl(25 60% 14%)";
+  var SAND  = "hsl(38 30% 90%)";
+
   var MAX_COUNT = 30000;
   var COUNT = Math.round(MAX_COUNT * PARTICLES);
   var STEP = VIBRATION * 0.09;            /* walk amplitude derived from vibration strength */
@@ -87,11 +95,6 @@
     canvas.width = SIZE; canvas.height = SIZE;
     var ctx = canvas.getContext("2d", { alpha: false });
 
-    /* per-album color from the seed — always inside the site's coffee palette:
-       hue 22-46 (caramel..copper), moderate saturation, latte-to-cream lightness */
-    var hue = 22 + Math.floor(rng() * 24);
-    var sat = 34 + Math.floor(rng() * 30);
-    var lit = 66 + Math.floor(rng() * 16);
     var pair = MODES[seedStr] || [randParams(rng), randParams(rng)];
     var cur = pair[0], nxt = pair[1];
     var lastSwitch = performance.now() - rng() * MORPH_EVERY;  /* stagger the clocks */
@@ -103,12 +106,12 @@
     /* warm-up: settle the sand before the first paint (math only, no drawing) */
     for (var it = 0; it < 400; it++) physics(px, py, COUNT, cur.m, cur.n, cur.a, cur.b, STEP);
 
-    /* paint the plate */
-    ctx.fillStyle = "#0d0b09";
+    /* paint the plate — the site's heading chocolate, not pure black */
+    ctx.fillStyle = PLATE;
     ctx.fillRect(0, 0, SIZE, SIZE);
 
     return {
-      canvas: canvas, ctx: ctx, hue: hue, sat: sat, lit: lit, rng: rng,
+      canvas: canvas, ctx: ctx, rng: rng,
       cur: cur, nxt: nxt, lastSwitch: lastSwitch,
       px: px, py: py, visible: false
     };
@@ -126,9 +129,9 @@
     physics(px, py, COUNT, s.cur.m, s.cur.n, s.cur.a, s.cur.b, STEP);
 
     /* full clear each frame — grains render as individual specks, no trails */
-    ctx.fillStyle = "#0d0b09";
+    ctx.fillStyle = PLATE;
     ctx.fillRect(0, 0, SIZE, SIZE);
-    ctx.fillStyle = "hsl(" + s.hue + " " + s.sat + "% " + s.lit + "%)";
+    ctx.fillStyle = SAND;
     for (var i = 0; i < COUNT; i++) {
       ctx.fillRect((px[i] * SIZE) | 0, (py[i] * SIZE) | 0, 1, 1);
     }
