@@ -19,6 +19,11 @@
       : "album.html?id=" + item.albumId;
   };
 
+  /* honest reading time: word count / 200 wpm, at least 1 min */
+  function readMin(t) {
+    return Math.max(1, Math.round(t.split(/\s+/).length / 200)) + " min";
+  }
+
   function albumCard(a, i) {
     var el = document.createElement("a");
     el.className = "album-card fade-in d" + Math.min(i + 1, 4);
@@ -82,7 +87,7 @@
         row.innerHTML =
           '<span class="metadata no">' + String(i + 1).padStart(2, "0") + "</span>" +
           '<span class="t">' + t.title + "</span>" +
-          '<span class="dur"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="metadata">' + t.readingTime + "</span></span>" +
+          '<span class="dur"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="metadata">' + readMin(t.content) + "</span></span>" +
           '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>';
         list.appendChild(row);
       });
@@ -104,7 +109,7 @@
       trackMount.querySelector("[data-trackno]").textContent = "Track " + String(idx + 1).padStart(2, "0");
       trackMount.querySelector("h1").textContent = tr.title;
       trackMount.querySelector("[data-albtitle]").textContent = alb.title;
-      trackMount.querySelector("[data-time]").textContent = tr.readingTime;
+      trackMount.querySelector("[data-time]").textContent = readMin(tr.content);
 
       var st = trackMount.querySelector("[data-soundtrack]");
       if (tr.soundtrack) st.querySelector(".name").textContent = tr.soundtrack;
