@@ -8,7 +8,6 @@ window.ALBUMS = [
     id: "robot-kinematics",
     title: "Robot Kinematics",
     type: "album",
-    cover: "assets/album-kinematics.jpg",
     year: "2025",
     description: "A deep dive into forward and inverse kinematics, DH parameters, and manipulator workspace analysis. This album covers the mathematical foundations that make robot arms move with precision.",
     tracks: [
@@ -22,7 +21,6 @@ window.ALBUMS = [
     id: "robot-perception",
     title: "Robot Perception",
     type: "album",
-    cover: "assets/album-perception.jpg",
     year: "2025",
     description: "Exploring how robots see and understand the world through computer vision, deep learning, and sensor fusion. From raw pixels to semantic understanding.",
     tracks: [
@@ -36,7 +34,6 @@ window.ALBUMS = [
     id: "motion-planning",
     title: "Motion Planning",
     type: "album",
-    cover: "assets/album-motion.jpg",
     year: "2024",
     description: "Algorithms that help robots navigate from A to B while avoiding obstacles. From classical graph search to modern sampling-based planners.",
     tracks: [
@@ -49,7 +46,6 @@ window.ALBUMS = [
     id: "control-systems",
     title: "Control Systems",
     type: "ep",
-    cover: "assets/album-control.jpg",
     year: "2024",
     description: "Short series on feedback control: PID tuning, state-space methods, and modern optimal control for robotics applications.",
     tracks: [
@@ -61,7 +57,6 @@ window.ALBUMS = [
     id: "slam-mapping",
     title: "SLAM & Mapping",
     type: "mixtape",
-    cover: "assets/album-slam.jpg",
     year: "2024",
     description: "Experimental notes on Simultaneous Localization and Mapping—from EKF-SLAM to modern visual-inertial odometry and neural implicit maps.",
     tracks: [

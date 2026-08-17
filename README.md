@@ -27,15 +27,17 @@ gh repo create kaleido-jean/kaleido-jean.github.io --public --source=. --push
 
 ## 结构
 
-- `index.html` — 学术式简介 hero（SpiralVortex 星云背景）+ Updates + Discography/Photography 预览
+- `index.html` — 学术式简介 hero + Updates + Discography/Photography 预览
 - `discography.html` — 全部专辑 · `album.html?id=<slug>` — 专辑详情 · `track.html?album=<slug>&track=<id>` — 课文页
 - `photography.html` / `about.html`
-- `assets/site.js` 渲染与主题 · `assets/vortex.js` 首页星云 · `assets/curves.js` 全站舞动曲线 · `assets/albums.js` 全部内容数据
+- `assets/site.js` 渲染与主题 · `assets/chladni.js` Chladni 封面生成 · `assets/albums.js` 全部内容数据
 
 ## 与原稿（github.com/kaleido-jean/genz-discography）的对应关系
 
-对照源码逐项复刻：设计 token（index.css 的 HSL 变量原样搬运）、字体（Barlow Condensed / Inter / JetBrains Mono）、首页 hero 的 SpiralVortex（Three.js 版用原参数方程移植成 Canvas 2D，assets/vortex.js）、全站 DancingCurves（framer-motion 路径变形移植成 rAF 插值，assets/curves.js）、真实专辑封面与照片（源仓库 assets 直接拷贝）、五张专辑与全部 track 课文（discography.ts 原样搬进 albums.js）、Track 课文页（track.html：正文 + 阅读时长 + soundtrack + 上下篇）、Shuffle 60/40 逻辑、pulse-glow / album-card-glow / fade-in 动画、整站双主题（.dark class）。
+对照源码逐项复刻：设计 token（index.css 的 HSL 变量原样搬运）、字体（Barlow Condensed / Inter / JetBrains Mono）、照片（源仓库 assets 拷贝）、五张专辑与全部 track 课文（discography.ts 原样搬进 albums.js）、Track 课文页（track.html：正文 + 阅读时长 + soundtrack + 上下篇）、Shuffle 60/40 逻辑、pulse-glow / album-card-glow / fade-in 动画、整站双主题（.dark class）。
 
-仍有的差异：hero 标题区换成学术简介（用户要求）；路由用 `album.html?id=` / `track.html?album=&track=` 查询参数（静态站无 SPA 路由）；hero 增加联系 chips 和照片。
+后续按要求的改动：背景动效（SpiralVortex 星云 + DancingCurves 曲线）已移除；**专辑封面改为 Chladni 声波图案实时生成**（assets/chladni.js，灵感来自 pettaboy.github.io/cymaticssimulator_chladni）——公式 `f = a·sin(πnx)sin(πmy) + b·sin(πmx)sin(πny)`，每张专辑用专辑 id 做种子随机出 (m, n, a, b) 和色相，3200 个沙粒往波节线聚集，每 7 秒参数漂移一次、沙粒当场重排；同一专辑在卡片/详情页/课文页缩略图的图案一致；`prefers-reduced-motion` 时渲染收敛后的静态图。
+
+其他差异：hero 标题区换成学术简介（用户要求）；路由用 `album.html?id=` / `track.html?album=&track=` 查询参数（静态站无 SPA 路由）。
 
 **加新 track**：编辑 `assets/albums.js`，在对应专辑的 tracks 里加 `{ id, title, readingTime, content, soundtrack? }`，content 用 `\n\n` 分段——其余全自动。

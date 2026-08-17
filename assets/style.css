@@ -145,10 +145,6 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------------- hero (home) ---------------- */
 .hero { position: relative; padding: 128px 0 80px; overflow: hidden; }
-#vortex {
-  position: absolute; inset: 0; z-index: -10;
-  width: 100%; height: 100%; display: block;
-}
 .hero-in {
   position: relative;
   display: grid; grid-template-columns: 1fr 240px; gap: 52px; align-items: center;
@@ -225,8 +221,10 @@ section.block.lg { padding: 64px 0; }
 }
 .album-card:hover .box { box-shadow: var(--glow-primary); transform: translateY(-4px) scale(1.02); }
 .album-card .art { aspect-ratio: 1; overflow: hidden; }
-.album-card .art img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
-.album-card:hover .art img { transform: scale(1.1); }
+.album-card .art img,
+.album-card .art canvas { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
+.album-card:hover .art img,
+.album-card:hover .art canvas { transform: scale(1.1); }
 .album-card .meta { padding: 16px; }
 .album-card h3 {
   font-weight: 600; font-size: 16.5px; color: hsl(var(--foreground));
@@ -272,7 +270,8 @@ section.block.lg { padding: 64px 0; }
   transition: box-shadow .3s ease;
 }
 .album-hero .art:hover { box-shadow: var(--glow-primary); }
-.album-hero .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.album-hero .art img,
+.album-hero .art canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
 .album-hero .info { display: flex; flex-direction: column; justify-content: flex-end; }
 .album-hero h1 { font-size: clamp(36px, 5vw, 48px); font-weight: 700; margin: 8px 0 12px; }
 .album-hero .desc { color: hsl(var(--muted-foreground)); font-size: 14px; line-height: 1.65; max-width: 32rem; margin: 0 0 16px; }
@@ -302,7 +301,8 @@ section.block.lg { padding: 64px 0; }
 /* ---------------- track (lesson) page ---------------- */
 .track-head { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 40px; }
 .track-head .thumb { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
-.track-head .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.track-head .thumb img,
+.track-head .thumb canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
 .track-head h1 { font-size: clamp(28px, 4vw, 38px); font-weight: 700; margin: 4px 0 8px; }
 .track-head .meta-row { display: flex; align-items: center; gap: 16px; font-size: 14px; color: hsl(var(--muted-foreground)); }
 .track-head .meta-row span { display: inline-flex; align-items: center; gap: 4px; }
@@ -356,27 +356,3 @@ footer.site .container { display: flex; align-items: center; justify-content: sp
 .fade-in { opacity: 0; animation: fade-in .5s ease-out forwards; }
 .d1 { animation-delay: .1s; } .d2 { animation-delay: .2s; } .d3 { animation-delay: .3s; } .d4 { animation-delay: .4s; }
 
-/* ---------------- dancing curves backdrop ---------------- */
-#curves {
-  position: fixed; inset: 0; z-index: -10;
-  overflow: hidden; pointer-events: none; opacity: .15;
-}
-#curves svg { position: absolute; }
-#curves .c1 { top: -80px; left: -160px; width: 900px; height: 600px; animation: drift1 20s ease-in-out infinite; }
-#curves .c2 { top: 33%; right: -80px; width: 700px; height: 500px; animation: drift2 18s ease-in-out infinite; }
-#curves .c3 { bottom: 40px; left: 25%; width: 800px; height: 400px; animation: drift3 22s ease-in-out infinite; }
-@keyframes drift1 {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(30px) rotate(2deg); }
-  66% { transform: translateY(-20px) rotate(-1deg); }
-}
-@keyframes drift2 {
-  0%, 100% { transform: translate(0, -10px); }
-  33% { transform: translate(-15px, 20px); }
-  66% { transform: translate(10px, -15px); }
-}
-@keyframes drift3 {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(-25px) rotate(-1deg); }
-  66% { transform: translateY(15px) rotate(1.5deg); }
-}

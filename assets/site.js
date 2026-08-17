@@ -25,7 +25,7 @@
     el.href = "album.html?id=" + a.id;
     var label = { album: "Album", ep: "EP", mixtape: "Mixtape" }[a.type];
     el.innerHTML =
-      '<div class="box"><div class="art"><img loading="lazy" src="' + a.cover + '" alt="' + a.title + '"></div>' +
+      '<div class="box"><div class="art"><canvas class="chladni" data-seed="' + a.id + '" aria-label="Generated cover art for ' + a.title + '"></canvas></div>' +
       '<div class="meta"><div class="metadata">' + label + " · " + a.year + "</div>" +
       "<h3>" + a.title + "</h3>" +
       '<p class="tracks">' + a.tracks.length + " tracks</p></div></div>";
@@ -56,8 +56,8 @@
       var a = window.ALBUMS.find(function (x) { return x.id === qs.get("id"); }) || window.ALBUMS[0];
       document.title = a.title + " — Jinyao Zhou";
       var label = { album: "Album", ep: "EP", mixtape: "Mixtape" }[a.type];
-      albumMount.querySelector(".art img").src = a.cover;
-      albumMount.querySelector(".art img").alt = a.title;
+      albumMount.querySelector(".art").innerHTML =
+        '<canvas class="chladni" data-seed="' + a.id + '" aria-label="Generated cover art for ' + a.title + '"></canvas>';
       albumMount.querySelector("[data-kind]").textContent = label;
       albumMount.querySelector("h1").textContent = a.title;
       albumMount.querySelector(".desc").textContent = a.description;
@@ -94,8 +94,8 @@
 
       trackMount.querySelector("[data-back]").href = "album.html?id=" + alb.id;
       trackMount.querySelector("[data-back] .albname").textContent = alb.title;
-      trackMount.querySelector(".thumb img").src = alb.cover;
-      trackMount.querySelector(".thumb img").alt = alb.title;
+      trackMount.querySelector(".thumb").innerHTML =
+        '<canvas class="chladni" data-seed="' + alb.id + '" aria-label="Generated cover art for ' + alb.title + '"></canvas>';
       trackMount.querySelector("[data-trackno]").textContent = "Track " + String(idx + 1).padStart(2, "0");
       trackMount.querySelector("h1").textContent = tr.title;
       trackMount.querySelector("[data-albtitle]").textContent = alb.title;
