@@ -299,12 +299,12 @@ section.block.lg { padding: 64px 0; }
 .track-item:hover .chev { opacity: 1; }
 
 /* ---------------- track (lesson) page ---------------- */
-.track-head { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 40px; }
-.track-head .thumb { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+.track-head { display: flex; align-items: center; gap: 22px; margin-bottom: 36px; }
+.track-head .thumb { width: 96px; height: 96px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
 .track-head .thumb img,
 .track-head .thumb canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
-.track-head h1 { font-size: clamp(28px, 4vw, 38px); font-weight: 700; margin: 4px 0 8px; }
-.track-head .meta-row { display: flex; align-items: center; gap: 16px; font-size: 14px; color: hsl(var(--muted-foreground)); }
+.track-head h1 { font-size: clamp(26px, 3.5vw, 34px); font-weight: 700; line-height: 1.15; margin: 6px 0 8px; }
+.track-head .meta-row { display: flex; align-items: center; gap: 14px; font-size: 13px; color: hsl(var(--muted-foreground)); }
 .track-head .meta-row span { display: inline-flex; align-items: center; gap: 4px; }
 .track-head .meta-row svg { width: 12px; height: 12px; }
 
