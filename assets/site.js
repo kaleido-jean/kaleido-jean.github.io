@@ -129,7 +129,7 @@
       window.UPDATES.slice(0, limit).forEach(function (u) {
         var row = document.createElement("div");
         row.className = "update";
-        row.innerHTML = '<span class="ev">' + u.ev + '</span><span class="where">' + u.where + '</span><span class="when">' + u.when + "</span>";
+        row.innerHTML = '<span class="ev">' + u.ev + '</span><span class="loc">' + u.where + " | " + u.when + "</span>";
         mount.appendChild(row);
       });
     });

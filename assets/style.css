@@ -226,9 +226,8 @@ section.block.lg { padding: 64px 0; }
   font-size: 14px; color: hsl(var(--foreground) / .92);
 }
 .update .ev { flex: 1; }
-.update .where { color: hsl(var(--muted-foreground)); white-space: nowrap; }
-.update .when { color: hsl(var(--muted-foreground)); white-space: nowrap; min-width: 72px; text-align: right; }
-@media (max-width: 640px) { .update { flex-wrap: wrap; } .update .where { margin-left: auto; } }
+.update .loc { color: hsl(var(--muted-foreground)); white-space: nowrap; }
+@media (max-width: 640px) { .update { flex-wrap: wrap; } .update .loc { margin-left: auto; } }
 .update:last-child { border-bottom: none; }
 
 
