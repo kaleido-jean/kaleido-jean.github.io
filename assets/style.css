@@ -222,8 +222,8 @@ section.block.lg { padding: 64px 0; }
 .updates { background: hsl(var(--card) / .8); border-radius: 8px; padding: 12px 20px; }
 .update {
   display: flex; align-items: baseline; gap: 16px;
-  padding: 9px 0; border-bottom: 1px dashed hsl(var(--border) / .5);
-  font-size: 13px; color: hsl(var(--muted-foreground));
+  padding: 10px 0; border-bottom: 1px dashed hsl(var(--border) / .5);
+  font-size: 15.5px; color: hsl(var(--foreground) / .92);
 }
 .update .ev { flex: 1; }
 .update .where { font-size: 11px; color: hsl(var(--muted-foreground) / .75); white-space: nowrap; }
@@ -371,7 +371,7 @@ article.lesson p { margin: 0 0 16px; }
 .about-updates .row {
   display: flex; align-items: baseline; gap: 16px;
   padding: 12px 0; border-bottom: 1px dashed hsl(var(--border));
-  font-size: 14px;
+  font-size: 15.5px; color: hsl(var(--foreground) / .92);
 }
 .about-updates .row .ev { flex: 1; }
 .about-updates .row .where { white-space: nowrap; }
