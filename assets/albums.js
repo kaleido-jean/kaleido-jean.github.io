@@ -86,6 +86,8 @@ window.ALBUMS = [
    A collection:     { images: ["assets/a.jpg", "assets/b.jpg", ...], ... }
    Collections show a count badge and open as a pageable lightbox. */
 window.PHOTOS = [
+  { id: "p0", src: "assets/bside-teardown.jpg", kind: "photo", title: "拆! — Teardown Days",
+    description: "Holding a battery module fixture on the Tesla workshop floor. The graffiti behind says it all.", date: "2022–25" },
   { id: "p1", src: "assets/photo-1.jpg", kind: "photo", title: "Neon Frequencies", description: "Urban nightscape captured in long exposure", date: "2025.01" },
   { id: "p2", src: "assets/photo-2.jpg", kind: "photo", title: "Light Geometry", description: "Abstract light painting experiment", date: "2025.02" },
   { id: "p3", src: "assets/photo-3.jpg", kind: "photo", title: "Mechanical Soul", description: "Close-up of robotic mechanisms", date: "2024.11" },
