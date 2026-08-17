@@ -2,16 +2,9 @@
 
 个人主页。设计复刻自我的 Lovable 草稿（GenZ Discography），顶部换成了学术主页式的个人简介。纯静态，无构建步骤。
 
-## 部署（一次性）
+## 已上线
 
-```bash
-cd ~/kaleido_ws/kaleido-jean.github.io
-git init && git add -A && git commit -m "Initial homepage"
-gh repo create kaleido-jean/kaleido-jean.github.io --public --source=. --push
-```
-
-推完约一分钟后生效：https://kaleido-jean.github.io
-（如未生效：仓库 Settings → Pages → Source 选 `main` 分支根目录。）
+**https://kaleido-jean.github.io** ——仓库 `kaleido-jean/kaleido-jean.github.io`，Pages 从 `main` 分支根目录构建。日常更新：改完 `git add -A && git commit && git push`，约一分钟生效。
 
 ## 日常维护
 
