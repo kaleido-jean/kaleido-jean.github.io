@@ -31,18 +31,42 @@
     };
   }
 
-  /* random 4-param combo: m, n integers (like the simulator), a, b amplitudes */
+  /* random 4-param combo: m, n integers, |a| = |b| = 1 for the classic
+     symmetric Chladni figures (what makes the simulator's patterns regular) */
   function randParams(rng) {
-    var m = 1 + Math.floor(rng() * 8);          /* 1..8 */
-    var n = 1 + Math.floor(rng() * 8);
-    if (m === n) n = (n % 8) + 1;               /* degenerate m=n gives blank plate */
-    var a = 0.4 + rng() * 0.6;                  /* 0.4..1 */
-    var b = (0.4 + rng() * 0.6) * (rng() < 0.5 ? -1 : 1);
-    return { m: m, n: n, a: a, b: b };
+    var m = 1 + Math.floor(rng() * 7);          /* 1..7 */
+    var n = 1 + Math.floor(rng() * 7);
+    if (m === n) n = (n % 7) + 1;               /* m=n degenerates to a blank plate */
+    return { m: m, n: n, a: 1, b: rng() < 0.5 ? -1 : 1 };
   }
 
-  var SIZE = 280;          /* sim + canvas resolution (square) */
-  var COUNT = 3200;        /* particles per cover */
+  /* one physics step: Newton projection onto the nodal set f = 0.
+     p -= f·∇f/|∇f|²  snaps particles onto the curve — this is what makes
+     the lines razor-sharp; a tiny jitter keeps the sand look alive. */
+  function physics(px, py, count, m, n, a, b, jitter) {
+    var PI = Math.PI, CLAMP = 0.012;
+    for (var i = 0; i < count; i++) {
+      var x = px[i], y = py[i];
+      var snx = Math.sin(PI * n * x), smy = Math.sin(PI * m * y);
+      var smx = Math.sin(PI * m * x), sny = Math.sin(PI * n * y);
+      var f = a * snx * smy + b * smx * sny;
+      var gx = a * PI * n * Math.cos(PI * n * x) * smy + b * PI * m * Math.cos(PI * m * x) * sny;
+      var gy = a * PI * m * snx * Math.cos(PI * m * y) + b * PI * n * smx * Math.cos(PI * n * y);
+      var g2 = gx * gx + gy * gy + 1e-6;
+      var k = f / g2;
+      var dx = -k * gx, dy = -k * gy;
+      if (dx > CLAMP) dx = CLAMP; else if (dx < -CLAMP) dx = -CLAMP;
+      if (dy > CLAMP) dy = CLAMP; else if (dy < -CLAMP) dy = -CLAMP;
+      x += dx + (Math.random() - 0.5) * jitter;
+      y += dy + (Math.random() - 0.5) * jitter;
+      if (x < 0) x = -x; else if (x >= 1) x = 2 - x - 1e-4;
+      if (y < 0) y = -y; else if (y >= 1) y = 2 - y - 1e-4;
+      px[i] = x; py[i] = y;
+    }
+  }
+
+  var SIZE = 360;          /* sim + canvas resolution (square) */
+  var COUNT = 9000;        /* fine sand: many small grains, not few big ones */
   var MORPH_EVERY = 12000; /* ms between new parameter combos — long, so low vibration can settle */
   var sims = [];
 
@@ -60,29 +84,14 @@
     var lit = 58 + Math.floor(rng() * 16);
     var cur = randParams(rng);
     var nxt = randParams(rng);
-    var morphT = 1;                    /* 0..1 progress of cur→nxt blend */
-    var lastSwitch = -(rng() * MORPH_EVERY);   /* stagger the morph clocks */
+    var lastSwitch = performance.now() - rng() * MORPH_EVERY;  /* stagger the clocks */
 
     /* particles: Float32 x,y in [0,1) */
     var px = new Float32Array(COUNT), py = new Float32Array(COUNT);
     for (var i = 0; i < COUNT; i++) { px[i] = rng(); py[i] = rng(); }
 
-    /* warm-up: settle the sand before the first paint (math only, no drawing)
-       — uses a higher step so the pattern is already formed when the cover appears */
-    var PI = Math.PI;
-    for (var it = 0; it < 250; it++) {
-      for (var j = 0; j < COUNT; j++) {
-        var wx = px[j], wy = py[j];
-        var wf = cur.a * Math.sin(PI * cur.n * wx) * Math.sin(PI * cur.m * wy)
-               + cur.b * Math.sin(PI * cur.m * wx) * Math.sin(PI * cur.n * wy);
-        var wv = Math.abs(wf) * 0.05;
-        wx += (Math.random() - 0.5) * wv;
-        wy += (Math.random() - 0.5) * wv;
-        if (wx < 0) wx = -wx; else if (wx >= 1) wx = 2 - wx - 1e-4;
-        if (wy < 0) wy = -wy; else if (wy >= 1) wy = 2 - wy - 1e-4;
-        px[j] = wx; py[j] = wy;
-      }
-    }
+    /* warm-up: settle the sand before the first paint (math only, no drawing) */
+    for (var it = 0; it < 80; it++) physics(px, py, COUNT, cur.m, cur.n, cur.a, cur.b, 0.004);
 
     /* paint the plate */
     ctx.fillStyle = "#0d0b09";
@@ -90,47 +99,29 @@
 
     return {
       canvas: canvas, ctx: ctx, hue: hue, sat: sat, lit: lit, rng: rng,
-      cur: cur, nxt: nxt, morphT: morphT, lastSwitch: lastSwitch,
-      px: px, py: py, visible: false, settled: 0
+      cur: cur, nxt: nxt, lastSwitch: lastSwitch,
+      px: px, py: py, visible: false
     };
   }
 
-  function ease(u) { return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
-
   function step(s, now) {
-    /* parameter morphing: blend cur→nxt, then pick a fresh combo */
-    if (now - s.lastSwitch > MORPH_EVERY && s.morphT >= 1) {
+    /* switch to a fresh integer mode every MORPH_EVERY ms — no fractional
+       blending (mid-blend patterns aren't eigenmodes and look messy);
+       the sand visibly crawls from the old figure to the new one instead */
+    if (now - s.lastSwitch > MORPH_EVERY) {
       s.cur = s.nxt; s.nxt = randParams(s.rng);
-      s.morphT = 0; s.lastSwitch = now;
+      s.lastSwitch = now;
     }
-    if (s.morphT < 1) s.morphT = Math.min(1, s.morphT + 0.012);
-    var k = ease(s.morphT);
-    var m = s.cur.m + (s.nxt.m - s.cur.m) * k;   /* fractional m,n mid-morph is fine */
-    var n = s.cur.n + (s.nxt.n - s.cur.n) * k;
-    var a = s.cur.a + (s.nxt.a - s.cur.a) * k;
-    var b = s.cur.b + (s.nxt.b - s.cur.b) * k;
 
     var ctx = s.ctx, px = s.px, py = s.py;
+    physics(px, py, COUNT, s.cur.m, s.cur.n, s.cur.a, s.cur.b, 0.0035);
 
-    /* fade previous frame — leaves sand trails like the plate */
-    ctx.fillStyle = "rgba(13,11,9,0.22)";
+    /* fade previous frame — leaves faint sand trails */
+    ctx.fillStyle = "rgba(13,11,9,0.28)";
     ctx.fillRect(0, 0, SIZE, SIZE);
-
-    var PI = Math.PI, STEP = 0.018;   /* vibration strength — kept low for crisp nodal lines */
     ctx.fillStyle = "hsl(" + s.hue + " " + s.sat + "% " + s.lit + "%)";
     for (var i = 0; i < COUNT; i++) {
-      var x = px[i], y = py[i];
-      var f = a * Math.sin(PI * n * x) * Math.sin(PI * m * y)
-            + b * Math.sin(PI * m * x) * Math.sin(PI * n * y);
-      var v = Math.abs(f);                       /* vibration strength at this point */
-      /* random walk scaled by vibration — particles settle on nodal lines (v≈0) */
-      x += (Math.random() - 0.5) * STEP * v;
-      y += (Math.random() - 0.5) * STEP * v;
-      /* keep on the plate */
-      if (x < 0) x = -x; else if (x >= 1) x = 2 - x - 1e-4;
-      if (y < 0) y = -y; else if (y >= 1) y = 2 - y - 1e-4;
-      px[i] = x; py[i] = y;
-      ctx.fillRect((x * SIZE) | 0, (y * SIZE) | 0, 1.5, 1.5);
+      ctx.fillRect((px[i] * SIZE) | 0, (py[i] * SIZE) | 0, 1, 1);
     }
   }
 
