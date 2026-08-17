@@ -47,8 +47,8 @@ body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 15.5px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -124,7 +124,7 @@ a { color: inherit; text-decoration: none; }
 .btn-pill {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 24px; border-radius: 999px; cursor: pointer;
-  font-family: var(--font-heading); font-weight: 600; font-size: 16px;
+  font-family: var(--font-heading); font-weight: 600; font-size: 15px;
   border: none; transition: opacity .15s, background .15s;
 }
 .btn-pill svg { width: 16px; height: 16px; }
@@ -155,13 +155,13 @@ a { color: inherit; text-decoration: none; }
   .hero-photo { order: -1; }
 }
 .hero h1 {
-  font-size: clamp(42px, 6.5vw, 68px);
-  font-weight: 700; line-height: 1.08; margin: 14px 0 8px;
+  font-size: clamp(36px, 5vw, 48px);   /* same display size as the other page heads */
+  font-weight: 700; line-height: 1.08; margin: 0 0 8px;
 }
-.hero .role { font-size: 17px; color: hsl(var(--muted-foreground)); margin: 0 0 20px; }
+.hero .role { font-size: 15.5px; color: hsl(var(--muted-foreground)); margin: 0 0 20px; }
 .hero .role a { text-decoration: underline; text-underline-offset: 3px; }
 .hero .role a:hover { color: hsl(var(--primary)); }
-.hero .bio { max-width: 58ch; margin: 0 0 12px; color: hsl(var(--foreground) / .92); }
+.hero .bio { max-width: 58ch; margin: 0 0 12px; font-size: 15.5px; color: hsl(var(--foreground) / .92); }
 .hero .bio strong { font-weight: 600; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
@@ -201,11 +201,11 @@ section.block.lg { padding: 64px 0; }
 .updates { background: hsl(var(--card) / .8); border-radius: 8px; padding: 12px 20px; }
 .update {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 0; border-bottom: 1px dashed hsl(var(--border) / .5);
-  font-size: 12px; color: hsl(var(--muted-foreground));
+  padding: 9px 0; border-bottom: 1px dashed hsl(var(--border) / .5);
+  font-size: 13px; color: hsl(var(--muted-foreground));
 }
 .update:last-child { border-bottom: none; }
-.update .when { font-size: 11px; color: hsl(var(--muted-foreground) / .6); margin-left: 16px; white-space: nowrap; }
+.update .when { font-size: 12px; color: hsl(var(--muted-foreground) / .6); margin-left: 16px; white-space: nowrap; }
 
 /* ---------------- album cards ---------------- */
 .grid-albums { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -227,10 +227,10 @@ section.block.lg { padding: 64px 0; }
 .album-card:hover .art canvas { transform: scale(1.1); }
 .album-card .meta { padding: 16px; }
 .album-card h3 {
-  font-weight: 600; font-size: 16.5px; color: hsl(var(--foreground));
+  font-weight: 600; font-size: 16px; color: hsl(var(--foreground));
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px;
 }
-.album-card .tracks { font-size: 13.5px; color: hsl(var(--muted-foreground)); margin-top: 4px; }
+.album-card .tracks { font-size: 13px; color: hsl(var(--muted-foreground)); margin-top: 4px; }
 
 /* ---------------- photos ---------------- */
 .grid-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
