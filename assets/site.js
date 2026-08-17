@@ -43,7 +43,12 @@
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-albums]").forEach(function (mount) {
       var limit = parseInt(mount.dataset.albums, 10) || window.ALBUMS.length;
-      window.ALBUMS.slice(0, limit).forEach(function (a, i) { mount.appendChild(albumCard(a, i)); });
+      /* optional data-types="album,ep" filters by release type */
+      var types = mount.dataset.types ? mount.dataset.types.split(",") : null;
+      window.ALBUMS
+        .filter(function (a) { return !types || types.indexOf(a.type) !== -1; })
+        .slice(0, limit)
+        .forEach(function (a, i) { mount.appendChild(albumCard(a, i)); });
     });
     document.querySelectorAll("[data-photos]").forEach(function (mount) {
       window.PHOTOS.forEach(function (p, i) { mount.appendChild(photoCell(p, i)); });

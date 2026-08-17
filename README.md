@@ -20,7 +20,7 @@ gh repo create kaleido-jean/kaleido-jean.github.io --public --source=. --push
 | 简介文字 / 链接 | `index.html` 的 `.hero` 区块 |
 | **Scholar / LinkedIn / CV 链接** | `index.html` 里三个 `href="#"` 的 chip —— **目前是 TODO 占位** |
 | 邮箱 | 现在用的 gmail，想换 andrew 邮箱改 `index.html` 的 mailto |
-| 专辑 / 曲目 | `assets/albums.js` —— 一个对象一张专辑，改这一个文件即可 |
+| 专辑 / 曲目 | `assets/albums.js` —— 一个对象一张专辑，改这一个文件即可。`type` 字段决定分区：`album`/`ep` = 项目（首页 Albums & EPs），`mixtape` = 随笔（首页 Mixtapes） |
 | 首页动态 | `index.html` 的 Latest Updates + `about.html` 的 Updates 时间线（两处） |
 | 照片 | 把图放进 `assets/photos/`，替换 `photography.html` 和 `index.html` 里的渐变占位 div（注释里有示例代码） |
 | 头像 | `assets/profile.jpg`（已压到 540×720） |
