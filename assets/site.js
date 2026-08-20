@@ -14,6 +14,7 @@
   /* global shuffle — 60% lands on a track, 40% on an album */
   window.shuffle = function () {
     var item = window.getRandomItem();
+    if (!item) { location.href = "discography.html"; return; }
     location.href = item.type === "track"
       ? "track.html?album=" + item.albumId + "&track=" + item.trackId
       : "album.html?id=" + item.albumId;
@@ -119,10 +120,16 @@
       var limit = parseInt(mount.dataset.albums, 10) || window.ALBUMS.length;
       /* optional data-types="album,ep" filters by release type */
       var types = mount.dataset.types ? mount.dataset.types.split(",") : null;
-      window.ALBUMS
+      var shown = window.ALBUMS
         .filter(function (a) { return !types || types.indexOf(a.type) !== -1; })
-        .slice(0, limit)
-        .forEach(function (a, i) { mount.appendChild(albumCard(a, i)); });
+        .slice(0, limit);
+      if (!shown.length) {
+        var sec = mount.closest("section");
+        if (mount.hasAttribute("data-empty-hide") && sec) { sec.hidden = true; return; }
+        mount.outerHTML = '<p class="metadata" style="padding:8px 0 40px;max-width:60ch">' + window.ALBUMS_EMPTY_MSG + "</p>";
+        return;
+      }
+      shown.forEach(function (a, i) { mount.appendChild(albumCard(a, i)); });
     });
     document.querySelectorAll("[data-updates]").forEach(function (mount) {
       var limit = parseInt(mount.dataset.limit, 10) || window.UPDATES.length;
@@ -146,6 +153,7 @@
 
     /* ---------- album detail ---------- */
     var albumMount = document.querySelector("[data-album-page]");
+    if (albumMount && !window.ALBUMS.length) { location.replace("discography.html"); return; }
     if (albumMount) {
       var qs = new URLSearchParams(location.search);
       var a = window.ALBUMS.find(function (x) { return x.id === qs.get("id"); }) || window.ALBUMS[0];
@@ -180,6 +188,7 @@
 
     /* ---------- track (lesson) page ---------- */
     var trackMount = document.querySelector("[data-track-page]");
+    if (trackMount && !window.ALBUMS.length) { location.replace("discography.html"); return; }
     if (trackMount) {
       var q = new URLSearchParams(location.search);
       var alb = window.ALBUMS.find(function (x) { return x.id === q.get("album"); }) || window.ALBUMS[0];
