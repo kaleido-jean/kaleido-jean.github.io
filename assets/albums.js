@@ -12,8 +12,8 @@ window.ALBUMS = [];
 
 /* Shown wherever the discography would render while ALBUMS is empty */
 window.ALBUMS_EMPTY_MSG =
-  "占位用，我在持续更新中 — the earlier entries here were AI-generated slop, " +
-  "and I'd rather not waste your time on that. Real liner notes, written by me, are on the way.";
+  "The earlier entries here were AI-generated slop, and I'd rather not waste " +
+  "your time on that. Real liner notes, written by me, are on the way.";
 
 /* B-Sides gallery — kind: "photo" | "artwork".
    A single piece:   { src: "assets/x.jpg", ... }
