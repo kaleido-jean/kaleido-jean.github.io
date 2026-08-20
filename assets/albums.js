@@ -1,19 +1,87 @@
 /* ============================================================
-   Discography data — cleared on purpose (2026-08): the previous
-   entries were AI-generated drafts, and they don't belong under
-   my name. Real ones are being written, album by album.
+   Discography data — real projects from the resume; the track
+   prose is placeholder for now (the earlier AI-generated drafts
+   were cleared on purpose) and is being rewritten by hand.
    type: "album"/"ep" = projects (home: Albums & EPs)
          "mixtape"    = casual notes & essays (home: Mixtapes)
    Each track: { id, title, content, soundtrack? } — reading time
    is computed from the content's word count at render time.
    content paragraphs are separated by "\n\n".
    ============================================================ */
-window.ALBUMS = [];
-
-/* Shown wherever the discography would render while ALBUMS is empty */
-window.ALBUMS_EMPTY_MSG =
-  "The earlier entries here were AI-generated slop, and I'd rather not waste " +
-  "your time on that. Real liner notes, written by me, are on the way.";
+window.ALBUMS = [
+  {
+    id: "human-elevator",
+    title: "HUMAN: Elevator Odyssey",
+    type: "album",
+    year: "2026",
+    description: "MRSD capstone on a Unitree G1 humanoid: navigation and loco-manipulation in multi-story human spaces, with riding the elevator as the core cross-floor skill. My lane: classical arm control, hand-eye calibration, and close-range perception.",
+    tracks: [
+      { id: "he-1", title: "Visual Servoing & Button Pressing", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "he-2", title: "Hand-Eye Calibration with RealSense D435i", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "he-3", title: "Reading Doors and Floors", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "he-4", title: "Composing Skills into Missions", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." }
+    ]
+  },
+  {
+    id: "battery-abuse",
+    title: "Battery Abuse & Validation",
+    type: "album",
+    year: "2022–25",
+    description: "Three and a half years at Tesla Shanghai — two as a battery abuse engineer, one and a half as a technical project manager. Pushing packs to their worst case: thermal, electrical, mechanical.",
+    tracks: [
+      { id: "ba-1", title: "Structural Battery, Blade LFP", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "ba-2", title: "Prismatic Module Abuse", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "ba-3", title: "TPM Across Ten Teams", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "ba-4", title: "What Production Teaches About Safety", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." }
+    ]
+  },
+  {
+    id: "deep-learning",
+    title: "Deep Learning",
+    type: "album",
+    year: "2025",
+    description: "The 11-785 run at CMU: building and training the classics — CNNs, RNNs, and transformers — with enough ablation discipline to know why they work.",
+    tracks: [
+      { id: "dl-1", title: "Face Classification & Verification", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "dl-2", title: "Speech Recognition: pBLSTM & CTC", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "dl-3", title: "Speech Recognition: Transformer", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "dl-4", title: "The Ablation Grind", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." }
+    ]
+  },
+  {
+    id: "adverse-fruit",
+    title: "Fruit Segmentation in the Dark",
+    type: "ep",
+    year: "2025",
+    description: "Fruit identification and segmentation under adverse illumination — a two-move pipeline: illumination-invariant features plus low-light enhancement.",
+    tracks: [
+      { id: "af-1", title: "YOLA: Illumination-Invariant Features", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "af-2", title: "SGZ: Seeing Before Inferring", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." }
+    ]
+  },
+  {
+    id: "mech-era",
+    title: "Mechanical Era",
+    type: "ep",
+    year: "2019–21",
+    description: "The undergrad years at UM-SJTU Joint Institute — when robots were linkages, motors, and machined parts. Three builds that taught me hardware has opinions.",
+    tracks: [
+      { id: "me-1", title: "Bolt-Tightening Tower Climber", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "me-2", title: "Transformable Wheel Robot", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." },
+      { id: "me-3", title: "RoboMaster Standard Robot", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." }
+    ]
+  },
+  {
+    id: "field-notes",
+    title: "Field Notes",
+    type: "mixtape",
+    year: "2026",
+    description: "Loose essays and notes — whatever doesn't fit an album. New tracks appear whenever something is worth writing down.",
+    tracks: [
+      { id: "fn-1", title: "Why a Discography?", content: "The earlier draft of this track was AI-generated slop, and I'd rather not waste your time on that. Real liner notes, written by me, are on the way." }
+    ]
+  }
+];
 
 /* B-Sides gallery — kind: "photo" | "artwork".
    A single piece:   { src: "assets/x.jpg", ... }
@@ -36,13 +104,11 @@ window.PHOTOS = [
      collection: { id, images: ["assets/a.jpg", ...], kind, title, description, date } */
 ];
 
-/* 60% chance of a track, 40% an album — same as getRandomItem() in source.
-   Returns null while the discography is empty. */
+/* 60% chance of a track, 40% an album — same as getRandomItem() in source */
 window.getRandomItem = function () {
   var albums = window.ALBUMS;
-  if (!albums.length) return null;
   var album = albums[Math.floor(Math.random() * albums.length)];
-  if (Math.random() > 0.4 && album.tracks.length) {
+  if (Math.random() > 0.4) {
     var track = album.tracks[Math.floor(Math.random() * album.tracks.length)];
     return { type: "track", albumId: album.id, trackId: track.id };
   }
